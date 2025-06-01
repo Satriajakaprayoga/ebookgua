@@ -12,12 +12,14 @@ $listTags = get_tags(array(
 $listCategories = get_categories(array(
     'orderby' => 'id', // urutkan berdasarkan ID
     'order'   => 'DESC', // ID terbesar (terbaru) di atas
-    'number'  => 5, // ambil 10 tag saja
+    'number'  => 3, // ambil 10 tag saja
 ));
 
-function getBadge() {
-    echo 'inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent';
-}
+$listPost = have_posts(array(
+  'orderby' => 'id',
+  'order' => 'DESC',
+  'number' => 2
+));
 
 
 function getCardBook() {
@@ -57,40 +59,6 @@ function getCardBook() {
                 </div>
               </div>
             </div>';
-}
-
-function getIconBook() {
-  echo '<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" class="h-5 w-5">
-          <path fill="currentColor" d="M7 6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v18H7zm2 22a2 2 0 0 1-2-2h18.25A1.75 1.75 0 0 0 27 24.25V6a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v20a4 4 0 0 0 4 4h17a1 1 0 1 0 0-2zm1.75-22A1.75 1.75 0 0 0 9 7.75v2.5c0 .966.784 1.75 1.75 1.75h10.5A1.75 1.75 0 0 0 23 10.25v-2.5A1.75 1.75 0 0 0 21.25 6zm.25 4V8h10v2z"/>
-        </svg>';
-}
-
-function getCardCategoryBook() {
-  echo '<div class="group cursor-pointer shadow-md hover:shadow-lg transition-shadow bg-white rounded-xl">
-          <!-- card content -->
-           <div class="p-4 justify-center flex text-center items-center">
-              <div class="relative mb-4 ">
-                <!-- info -->
-                  <div class="space-y-1">
-                    <!-- icon -->
-                    <div class="justify-center flex mb-2">
-                      <div class="justify-center items-center flex p-1 bg-blue-300 text-blue-700 rounded-full w-8 h-8 " >
-                          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" class="h-5 w-5">
-                            <path fill="currentColor" d="M7 6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v18H7zm2 22a2 2 0 0 1-2-2h18.25A1.75 1.75 0 0 0 27 24.25V6a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v20a4 4 0 0 0 4 4h17a1 1 0 1 0 0-2zm1.75-22A1.75 1.75 0 0 0 9 7.75v2.5c0 .966.784 1.75 1.75 1.75h10.5A1.75 1.75 0 0 0 23 10.25v-2.5A1.75 1.75 0 0 0 21.25 6zm.25 4V8h10v2z"/>
-                          </svg>
-                      </div>
-                    </div>
-                    <!-- name book -->
-                    <span class="text-md text-black font-bold">
-                      bintang
-                    </span>
-                    <!-- total book -->
-                    <p class="text-sm text-gray-600">1230 buku</p>
-
-                  </div>
-              </div>
-           </div>
-       </div>';
 }
 
 function getCardNewBook() {
@@ -229,19 +197,35 @@ function getCardNewBook() {
 
               echo '<div class="group cursor-pointer shadow-md hover:shadow-lg transition-shadow bg-white rounded-xl">
                       <div class="p-4 justify-center flex text-center items-center">
-                          <div class="relative mb-4 ">
+                          <div class="relative ">
                               <div class="space-y-1">' . $iconComponent . $nameComponent . $totalBookComponent . '</div>
                           </div>
                       </div>
                   </div>';
             }
             ?>
-
                 <?php else : ?>
             <?php echo 'tidak ada kategori'; ?>
         <?php endif; ?>
         <!-- </div> -->
   </div>
+</section>
+<section>
+  <?php if ( have_posts() ) {
+while ( have_posts(array(
+        'orderby' => 'id', // urutkan berdasarkan ID
+    'order'   => 'DESC', // ID terbesar (terbaru) di atas
+    'number'  => 2, // ambil 10 tag saja
+)) ) {
+
+the_post(); ?>
+
+<h2><?php the_title(); ?></h2> <br />
+
+<?php the_content(); ?>
+
+<?php }
+} ?>
 </section>
 
 <!-- BUKU TERBARU -->
@@ -263,32 +247,9 @@ function getCardNewBook() {
       <?php getCardNewBook() ?>
       <?php getCardNewBook() ?>
 
-      <!-- Duplikasikan kartu ini untuk buku lainnya -->
     </div>
   </div>
 </section>
-
-
-<!-- Benefit Section -->
-<!-- <section class="py-16 px-6 bg-white">
-  <div class="max-w-5xl mx-auto text-center">
-    <h2 class="text-3xl font-bold mb-12 text-gray-800">Apa yang Akan Kamu Pelajari?</h2>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-left">
-      <div class="bg-gray-50 p-6 rounded-xl shadow">
-        <h3 class="text-xl font-semibold mb-2">Strategi Bisnis</h3>
-        <p class="text-gray-600">Langkah-langkah membangun bisnis dari nol hingga menghasilkan.</p>
-      </div>
-      <div class="bg-gray-50 p-6 rounded-xl shadow">
-        <h3 class="text-xl font-semibold mb-2">Pemasaran Online</h3>
-        <p class="text-gray-600">Teknik digital marketing yang bisa langsung diterapkan.</p>
-      </div>
-      <div class="bg-gray-50 p-6 rounded-xl shadow">
-        <h3 class="text-xl font-semibold mb-2">Studi Kasus</h3>
-        <p class="text-gray-600">Kisah nyata pebisnis sukses yang bisa kamu tiru dan pelajari.</p>
-      </div>
-    </div>
-  </div>
-</section> -->
 
 <!-- CTA Section -->
 <section class="py-16 px-6 accent-primary bg-blue-500 text-white text-center">
@@ -296,9 +257,7 @@ function getCardNewBook() {
     <h2 class="text-3xl font-bold mb-4">Dapatkan Update Terbaru</h2>
     <p class="mb-6 text-lg">Berlangganan newsletter kami untuk mendapatkan informasi tentang buku-buku terbaru dan promo spesial</p>
     <div class="flex flex-wrap justify-center gap-3">
-      <!-- <div >
-        </div> -->
-        <Input
+        <input
           type="text"
           placeholder="Masukan alamat email"
           class="min-w-fit pl-4 pr-10 py-3 text-lg rounded-md border-gray-300 focus:border-blue-500 focus:ring-blue-500 shadow-md"
@@ -306,9 +265,6 @@ function getCardNewBook() {
       <button class=" bg-white text-blue-500 font-semibold px-8 py-4 rounded-md hover:bg-gray-100 transition" >
         berlangganan
       </button>
-      <!-- <a href="https://wa.me/08xxxxxxx" class=" bg-white text-blue-700 font-semibold px-8 py-4 rounded-full hover:bg-gray-100 transition">
-        Berlangganan
-      </a> -->
     </div>
   </div>
 </section>
