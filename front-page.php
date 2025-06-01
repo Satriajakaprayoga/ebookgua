@@ -1,13 +1,27 @@
 <?php get_header(); ?>
 <?php 
 
+$badgeStyle = 'bg-blue-50 text-primary-foreground hover:bg-blue-100 hover:cursor-pointer inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent ';
+// get tags from database
+$listTags = get_tags(array(
+    'orderby' => 'id', // urutkan berdasarkan ID
+    'order'   => 'DESC', // ID terbesar (terbaru) di atas
+    'number'  => 10, // ambil 10 tag saja
+));
+
+$listCategories = get_categories(array(
+    'orderby' => 'id', // urutkan berdasarkan ID
+    'order'   => 'DESC', // ID terbesar (terbaru) di atas
+    'number'  => 5, // ambil 10 tag saja
+));
+
 function getBadge() {
     echo 'inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent';
 }
 
 
 function getCardBook() {
-  echo '<div class="group cursor-pointer hover:shadow-lg transition-shadow bg-white rounded-md">
+  echo '<div class="group cursor-pointer shadow-md hover:shadow-lg transition-shadow bg-white rounded-md">
               <!-- card content -->
               <div class="p-4">
                 <!-- {/* Book Cover */} -->
@@ -45,10 +59,6 @@ function getCardBook() {
             </div>';
 }
 
-function getCardCategory() {
-  echo '';
-}
-
 function getIconBook() {
   echo '<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" class="h-5 w-5">
           <path fill="currentColor" d="M7 6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v18H7zm2 22a2 2 0 0 1-2-2h18.25A1.75 1.75 0 0 0 27 24.25V6a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v20a4 4 0 0 0 4 4h17a1 1 0 1 0 0-2zm1.75-22A1.75 1.75 0 0 0 9 7.75v2.5c0 .966.784 1.75 1.75 1.75h10.5A1.75 1.75 0 0 0 23 10.25v-2.5A1.75 1.75 0 0 0 21.25 6zm.25 4V8h10v2z"/>
@@ -56,7 +66,7 @@ function getIconBook() {
 }
 
 function getCardCategoryBook() {
-  echo '       <div class="group cursor-pointer shadow-md hover:shadow-lg transition-shadow bg-white rounded-xl">
+  echo '<div class="group cursor-pointer shadow-md hover:shadow-lg transition-shadow bg-white rounded-xl">
           <!-- card content -->
            <div class="p-4 justify-center flex text-center items-center">
               <div class="relative mb-4 ">
@@ -116,6 +126,12 @@ function getCardNewBook() {
 ';
 }
 
+// var_dump(get_posts(array(
+//       'orderby' => 'id', // urutkan berdasarkan ID
+//     'order'   => 'DESC', // ID terbesar (terbaru) di atas
+//     'number'  => 1, // ambil 10 tag saja
+// )));
+
 ?>
 
 
@@ -130,49 +146,31 @@ function getCardNewBook() {
       Akses ribuan eBook berkualitas dari berbagai genre dan penulis terkemuka
     </p>
       <div class="max-w-2xl mx-auto mb-8">
-    <div class="relative">
-      <Input
-        type="text"
-        placeholder="Cari judul buku, penulis, atau genre..."
-        class="w-full pl-4 pr-12 py-3 text-lg rounded-full border-gray-300 focus:border-blue-500 focus:ring-blue-500 shadow-md"
-      />
-      <Button
-        size="icon"
-        class="absolute right-2 top-1/2 transform -translate-y-1/2 rounded-full"
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" class="text-blue-500 hover:text-blue-600"  width="24" height="24" viewBox="0 0 24 24">
-          <path fill="currentColor" fill-rule="evenodd" d="M10.44 2.75a7.69 7.69 0 1 0 4.615 13.842c.058.17.154.329.29.464l3.84 3.84a1.21 1.21 0 0 0 1.71-1.712l-3.84-3.84a1.2 1.2 0 0 0-.463-.289A7.69 7.69 0 0 0 10.44 2.75m-5.75 7.69a5.75 5.75 0 1 1 11.5 0a5.75 5.75 0 0 1-11.5 0" clip-rule="evenodd"/>
-        </svg>
-      </Button>
-    </div>
+        <!-- search form -->
+    <?php get_search_form(); ?>
   </div>
   <div class="flex flex-wrap justify-center gap-3 mb-8">
-  <div class= "<?php getBadge() ?> bg-blue-50 text-primary-foreground hover:bg-blue-100 hover:cursor-pointer">
-      #Fiksi
+    <?php 
+    $noTagsMessage = 'Tidak ada tags';
+    // check is there tags
+      if ($listTags) : ?> 
+          <?php 
+          foreach ($listTags as $tag) { 
+              $tag_link = get_tag_link($tag->term_id);
+              echo '<div class="' . esc_attr($badgeStyle) . '">' . '<a href="' . esc_url($tag_link) . '">#' . esc_html($tag->name) . '</a></div> ';
+          }
+          ?>
+    <?php else : ?>
+        <?php echo '<div class="' . esc_attr($badgeStyle) . '">' . $noTagsMessage . '</div> '; ?>
+    <?php endif; 
+    ?> 
   </div>
-  <div class= "<?php getBadge() ?> bg-blue-50 text-primary-foreground hover:bg-blue-100 hover:cursor-pointer">
-      #NonFiksi
-  </div>
-  <div class= "<?php getBadge() ?> bg-blue-50 text-primary-foreground hover:bg-blue-100 hover:cursor-pointer">
-      #Pendidikan
-  </div>
-  <div class="<?php getBadge() ?> bg-blue-50 text-primary-foreground hover:bg-blue-100 hover:cursor-pointer">
-      #Tenologi
-  </div>
-  <div class="<?php getBadge() ?> bg-blue-50 text-primary-foreground hover:bg-blue-100 hover:cursor-pointer">
-      #Sastra
-  </div>
-  </div>
-
-    <!-- <a href="https://wa.me/08xxxxxxx" class="inline-block bg-green-600 hover:bg-green-700 text-white font-semibold px-8 py-4 rounded-full transition duration-300">
-      Download Sekarang
-    </a> -->
   </div>
 </section>
 
 <!-- BUKU PILIHAN -->
-<section class="max-w-7xl mx-auto bg-white">
-<div class="max-w-6xl mx-auto">
+<section class="max-w-7xl mx-auto bg-white my-2">
+<div class="max-w-6xl mx-10">
     <div class="flex justify-between items-center mb-8">
       <h2 class="text-2xl font-bold text-gray-900">Buku Pilihan</h2>
       <a href="#" class="flex items-center text-blue-600 hover:text-blue-700 font-medium">
@@ -197,27 +195,53 @@ function getCardNewBook() {
 
 <!-- CATEGORY -->
 <section class=" mx-auto bg-gray-100 px-4 py-10  my-20">
-<div class="max-w-6xl mx-auto">
-    <div class="flex justify-between items-center mb-8">
-      <h2 class="text-2xl font-bold text-gray-900">Kategori Populer</h2>
-      <a href="#" class="flex items-center text-blue-600 hover:text-blue-700 font-medium">
-        Lihat Semua
-       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="h-4 w-4 ml-1"  >
-          <path fill="none" stroke="currentColor" stroke-dasharray="12" stroke-dashoffset="12" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12l-7 -7M16 12l-7 7">
-            <animate fill="freeze" attributeName="stroke-dashoffset" dur="0.3s" values="12;0"/>
-          </path>
-        </svg>
-      </a>
-    </div>
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
-      <!-- card BOOK -->
-       <?php getCardCategoryBook() ?>
-       <?php getCardCategoryBook() ?>
-       <?php getCardCategoryBook() ?>
-       <?php getCardCategoryBook() ?>
-       <?php getCardCategoryBook() ?>
+  <div class="max-w-6xl mx-auto">
+      <div class="flex justify-between items-center mb-8">
+        <h2 class="text-2xl font-bold text-gray-900">Kategori Populer</h2>
+        <a href="#" class="flex items-center text-blue-600 hover:text-blue-700 font-medium">
+          Lihat Semua
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="h-4 w-4 ml-1"  >
+            <path fill="none" stroke="currentColor" stroke-dasharray="12" stroke-dashoffset="12" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12l-7 -7M16 12l-7 7">
+              <animate fill="freeze" attributeName="stroke-dashoffset" dur="0.3s" values="12;0"/>
+            </path>
+          </svg>
+        </a>
       </div>
-</div>
+      <!-- Check categori -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
+        <!-- card BOOK -->
+        <?php
+        if($listCategories) : ?>
+            <?php
+            foreach ($listCategories as $categories) {
+
+              $categorieName = $categories->name;
+              $categorieCount = $categories->category_count;
+              $iconComponent = '<div class="justify-center flex mb-2">
+                      <div class="justify-center items-center flex p-1 bg-blue-300 text-blue-700 rounded-full w-8 h-8 " >
+                          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" class="h-5 w-5">
+                            <path fill="currentColor" d="M7 6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v18H7zm2 22a2 2 0 0 1-2-2h18.25A1.75 1.75 0 0 0 27 24.25V6a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v20a4 4 0 0 0 4 4h17a1 1 0 1 0 0-2zm1.75-22A1.75 1.75 0 0 0 9 7.75v2.5c0 .966.784 1.75 1.75 1.75h10.5A1.75 1.75 0 0 0 23 10.25v-2.5A1.75 1.75 0 0 0 21.25 6zm.25 4V8h10v2z"/>
+                          </svg>
+                      </div>
+                    </div>';
+              $nameComponent = '<span class="text-md text-black font-bold">' . $categorieName . '</span>';
+              $totalBookComponent = '<p class="text-sm text-gray-600">' . $categorieCount . ' buku</p>';
+
+              echo '<div class="group cursor-pointer shadow-md hover:shadow-lg transition-shadow bg-white rounded-xl">
+                      <div class="p-4 justify-center flex text-center items-center">
+                          <div class="relative mb-4 ">
+                              <div class="space-y-1">' . $iconComponent . $nameComponent . $totalBookComponent . '</div>
+                          </div>
+                      </div>
+                  </div>';
+            }
+            ?>
+
+                <?php else : ?>
+            <?php echo 'tidak ada kategori'; ?>
+        <?php endif; ?>
+        <!-- </div> -->
+  </div>
 </section>
 
 <!-- BUKU TERBARU -->
