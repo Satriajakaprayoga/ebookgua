@@ -18,6 +18,6 @@ Great looking, modern, responsive, Medium styles theme,  Mediumish is the perfec
 
 == Develop ==
 1. clone from github in directory /wp-content/themes/
-2. run npm install (to install node_modules tailwind)
+2. run `npm install` (to install node_modules tailwind)
 3. `npm run build` (to run tailwind and build instead)
 4. happy code 
