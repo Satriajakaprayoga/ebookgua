@@ -1,9 +1,4 @@
 <?php
-
-// require_once get_template_directory() . '/inc/tailwind-navwalker.php';
-
-// echo '<div>' . get_template_directory() . '</div>';
-
 // function script
 
 // get file css
@@ -26,6 +21,13 @@ function ebookgua_register_menus()
     'primary' => __('Primary Menu', 'ebookgua')
   ]);
 }
+
+
+// configuration tailwind 
+function mytheme_enqueue_styles() {
+    wp_enqueue_style('theme-style', get_template_directory_uri() . '/assets/css/output.css', [], '1.0');
+}
+add_action('wp_enqueue_scripts', 'mytheme_enqueue_styles');
 
 
 // ================ BUKU BLOCK  START ============================ 
