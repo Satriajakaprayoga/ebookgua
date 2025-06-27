@@ -100,12 +100,12 @@ $queryGet3Newer = new WP_Query([...$args, 'posts_per_page' => 6]);
                       <?php endif; ?>
                     </div>
                   </a>
-                  <!-- {book.badge && ( -->
+                  <!-- status -->
                     <div class=" absolute top-2 right-2 text-white text-xs px-2 py-1 bg-green-500">
                       <p class="uppercase"><?php echo esc_html(get_post_meta(get_the_ID(), '_status', true) ?: 'Populer'); ?></p>
                     </div>
                 </div>
-                <!-- {/* Book Info */} -->
+                <!-- Book info -->
                 <div class="space-y-0">
                   <h4 class="font-semibold text-gray-900 line-clamp-2 group-hover:text-blue-600 transition-colors">
                       <a href="<?php the_permalink(); ?>" class="hover:underline cursor-pointer">

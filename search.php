@@ -27,7 +27,7 @@ $getSearch = get_posts(array(
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
         <?php if ( have_posts() ) : ?>
             <?php while ( have_posts() ) : the_post(); ?>
-                <div class="group cursor-pointer shadow-md hover:shadow-lg transition-shadow bg-white rounded-md">
+                <div class="group shadow-md hover:shadow-lg transition-shadow bg-white rounded-md">
                     <div class="p-4">
                         <?php ebookgua_postbox_default() ?>
                     </div>

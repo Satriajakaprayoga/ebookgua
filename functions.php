@@ -320,50 +320,56 @@ function ebookgua_postbox_default()
   $rating = get_post_meta($post->ID, '_rating', true);
   $status = get_post_meta($post->ID, '_status', true);
   $kategori_id = get_post_meta($post->ID, '_kategori', true);
+  $deskripsi = get_post_meta($post->ID,'_deskripsi', true);
   $kategori = get_category($kategori_id);
   $link = get_permalink($post->ID);
 ?>
   <a href="<?php echo esc_url($link); ?>" class="block group overflow-hidden">
     <div class="relative mb-4">
       <?php if (has_post_thumbnail($post->ID)): ?>
-        <div class="aspect-[3/4] bg-gray-200 rounded-lg mb-3 overflow-hidden shadow-md">
+        <div class="aspect-square bg-slate-200 rounded-lg mb-3 overflow-hidden shadow-md">
           <?php echo get_the_post_thumbnail($post->ID, 'medium', ['class' => 'w-full h-full object-cover']); ?>
         </div>
       <?php else: ?>
-        <!-- <img src="<?php echo get_template_directory_uri(); ?>/assets/images/default-book.jpg" alt="Default cover" class="w-full h-full object-cover" /> -->
-        <div class="aspect-[3/4] bg-gray-200 rounded-lg mb-3 flex items-center justify-center">
+        <div class="aspect-square bg-slate-200 rounded-lg mb-3 flex items-center justify-center">
           <div class="w-16 h-20 bg-white rounded shadow-sm"></div>
         </div>
-        <!-- <div class="w-16 h-20 bg-white rounded shadow-sm"></div> -->
       <?php endif; ?>
       <div class="absolute top-2 right-2 text-white text-xs px-2 py-1 bg-green-500 rounded-md uppercase">
         <?php echo esc_html($status ?: 'Populer'); ?>
       </div>
     </div>
-    <div class="space-y-2">
-      <h3 class="font-semibold text-gray-900 line-clamp-2 group-hover:text-blue-600 transition-colors">
-        <?php echo esc_html(wp_trim_words(get_the_title(), 10)); ?>
+    <div class="space-y-0">
+      <h3 class="font-semibold text-gray-900 line-clamp-2  transition-colors">
+          <a href="<?php the_permalink(); ?>" class="hover:underline cursor-pointer">
+            <?php echo esc_html(wp_trim_words(get_the_title(), 10)); ?>
+          </a>
       </h3>
 
+      <!-- penulis -->
       <?php if ($penulis): ?>
-        <p class="text-sm text-gray-600"> <?php echo esc_html($penulis); ?></p>
+        <p class="text-sm font-light text-gray-600"> <?php echo esc_html($penulis); ?></p>
       <?php endif; ?>
 
+      <!-- rating -->
       <?php if ($rating): ?>
         <div class="flex items-center space-x-1 text-yellow-400">
           <?php
-          // Pastikan rating antara 0 sampai 5
           $rating = max(0, min(5, floatval($rating)));
           $fullStars = floor($rating);
           echo str_repeat('★', $fullStars) . str_repeat('☆', 5 - $fullStars);
           ?>
-          <span class="text-sm text-gray-600 ml-1"><?php echo esc_html(number_format($rating, 1)); ?>/5</span>
+          <span class="text-sm text-gray-600 ml-1"><?php echo esc_html(number_format($rating, 1)); ?></span>
         </div>
       <?php endif; ?>
 
+      <!-- deskripsi -->
+     <?php if ($deskripsi): ?>
+          <p class="text-sm text-gray-600 line-clamp-2"><?php echo esc_html($deskripsi) ?> </p>
+      <?php endif; ?>
 
       <?php if ($kategori && !is_wp_error($kategori)): ?>
-        <div class="inline-flex items-center rounded-full border font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent text-gray-800 capitalize text-sm">
+        <div class="inline-flex items-center rounded px-2 py-1 font-semibold text-blue-600 text-xs bg-blue-100 mt-4">
           <?php echo esc_html($kategori->name); ?>
         </div>
       <?php endif; ?>
