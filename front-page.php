@@ -12,7 +12,7 @@ $listTags = get_tags(array(
 $listCategories = get_categories(array(
     'orderby' => 'id', // urutkan berdasarkan ID
     'order'   => 'DESC', // ID terbesar (terbaru) di atas
-    'number'  => 3, // ambil 10 tag saja
+    'number'  => 5, // ambil 10 tag saja
 ));
 
 $listPost = have_posts(array(
@@ -21,84 +21,16 @@ $listPost = have_posts(array(
   'number' => 2
 ));
 
+$args = [
+  'post_type' => 'buku',
+  'orderby' => 'date',
+  'order' => 'DESC',
+  
+];
 
-function getCardBook() {
-  echo '<div class="group cursor-pointer shadow-md hover:shadow-lg transition-shadow bg-white rounded-md">
-              <!-- card content -->
-              <div class="p-4">
-                <!-- {/* Book Cover */} -->
-                <div class="relative mb-4">
-                  <div class="aspect-[3/4] bg-gray-200 rounded-lg mb-3 flex items-center justify-center">
-                    <div class="w-16 h-20 bg-white rounded shadow-sm"></div>
-                  </div>
-                  <!-- {book.badge && ( -->
-                    <div class="<?php getBadge() ?> absolute top-2 left-2 text-white text-xs px-2 py-1 bg-green-500">
-                      <p>BAGONG</p>
-                    </div>
-                  <!-- )} -->
-                  <!-- <div class="absolute top-2 right-2 bg-white/80 hover:bg-white">
-                    <Bookmark class="h-4 w-4" />
-                  </div> -->
-                </div>
+$queryGetNewer = new WP_Query([...$args, 'posts_per_page' => 10]);
 
-                <!-- {/* Book Info */} -->
-                <div class="space-y-2">
-                  <h3 class="font-semibold text-gray-900 line-clamp-2 group-hover:text-blue-600 transition-colors">
-                    {book.title}
-                  </h3>
-                  <p class="text-sm text-gray-600">{book.author}</p>
-
-                  <!-- {/* Rating */} -->
-                  <div class="flex items-center space-x-1">
-                    bintang
-                    <span class="text-sm text-gray-600 ml-1">{book.rating}</span>
-                  </div>
-
-                  <!-- {/* Category */} -->
-                  <div class=" inline-flex items-center rounded-full border px-2.5 py-0.5 font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent text-white text-xs">{book.category}</div>
-                </div>
-              </div>
-            </div>';
-}
-
-function getCardNewBook() {
-  echo '      <div class="bg-white rounded-lg shadow-md hover:shadow-lg cursor-pointer transition-shadow p-4 relative">
-        <div class="flex gap-4">
-          <!-- Gambar -->
-          <div class="w-16 h-20 bg-gray-200 rounded flex items-center justify-center">
-            <div class="w-10 h-14 bg-white rounded shadow-sm"></div>
-          </div>
-
-          <!-- Konten -->
-          <div class="flex-1 space-y-1">
-            <div class="flex justify-between items-start">
-              <h3 class="font-semibold text-gray-900 text-sm line-clamp-2 hover:text-blue-600 transition-colors">
-                {book.title}
-              </h3>
-              <span class="bg-yellow-100 text-xs text-gray-700 px-2 py-0.5 rounded">Baru</span>
-            </div>
-            <p class="text-xs text-gray-500">{book.author}</p>
-            <div class="flex items-center text-yellow-400 text-sm">
-              ★★★★☆ <span class="text-gray-600 ml-1">{book.rating}</span>
-            </div>
-            <p class="text-sm text-gray-600 line-clamp-2">{book.description}</p>
-            <div class="flex items-center justify-between mt-2">
-              <span class="bg-blue-100 text-blue-600 text-xs px-2 py-0.5 rounded">{book.category}</span>
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400 hover:text-gray-600 cursor-pointer" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5v14l7-7 7 7V5H5z" />
-              </svg>
-            </div>
-          </div>
-        </div>
-      </div>
-';
-}
-
-// var_dump(get_posts(array(
-//       'orderby' => 'id', // urutkan berdasarkan ID
-//     'order'   => 'DESC', // ID terbesar (terbaru) di atas
-//     'number'  => 1, // ambil 10 tag saja
-// )));
+$queryGet3Newer = new WP_Query([...$args, 'posts_per_page' => 6]);
 
 ?>
 
@@ -152,17 +84,67 @@ function getCardNewBook() {
     </div>
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
       <!-- card -->
-            <?php getCardBook() ?>
-            <?php getCardBook() ?>
-            <?php getCardBook() ?>
-            <?php getCardBook() ?>
-            <?php getCardBook() ?>
+       <?php if($queryGetNewer->have_posts()) : ?>
+        <?php while ($queryGetNewer->have_posts()) : $queryGetNewer->the_post() ?>
+            <div class="group shadow-md hover:shadow-lg transition-shadow bg-white rounded-md">
+              <!-- card content -->
+              <div class="p-4">
+                <!-- {/* Book Cover */} -->
+                <div class="relative mb-4">
+                  <a href="<?php the_permalink() ?>" class="cursor-pointer">
+                    <div class="aspect-square bg-neutral-300 rounded-lg mb-3 flex items-center justify-center">
+                      <?php if (has_post_thumbnail()): ?>
+                        <?php the_post_thumbnail('medium', ['class' => 'w-full h-full object-cover rounded-md']); ?>
+                      <?php else: ?>
+                        <div class="w-16 h-20 bg-white rounded shadow-sm"></div>
+                      <?php endif; ?>
+                    </div>
+                  </a>
+                  <!-- {book.badge && ( -->
+                    <div class=" absolute top-2 right-2 text-white text-xs px-2 py-1 bg-green-500">
+                      <p class="uppercase"><?php echo esc_html(get_post_meta(get_the_ID(), '_status', true) ?: 'Populer'); ?></p>
+                    </div>
+                </div>
+                <!-- {/* Book Info */} -->
+                <div class="space-y-0">
+                  <h4 class="font-semibold text-gray-900 line-clamp-2 group-hover:text-blue-600 transition-colors">
+                      <a href="<?php the_permalink(); ?>" class="hover:underline cursor-pointer">
+                        <?php the_title(); ?>
+                      </a>
+                  </h4>
+                  <p class="text-sm font-light text-gray-600"><?php echo esc_html(get_post_meta(get_the_ID(), '_penulis', true)); ?></p>
+
+                  <!-- {/* Rating */} -->
+                  <?php $rating = floatval(get_post_meta(get_the_ID(), '_rating', true)); ?>
+                  <?php if ($rating): ?>
+                    <div class="flex items-center space-x-1 text-yellow-400">
+                      <?php echo str_repeat('★', floor($rating)) . str_repeat('☆', 5 - floor($rating)); ?>
+                      <span class="text-sm text-black ml-1"><?php echo number_format($rating, 1); ?></span>
+                    </div>
+                  <?php endif; ?>
+
+                  <!-- Category -->
+                    <?php
+                    $cat_id = get_post_meta(get_the_ID(), '_kategori', true);
+                    $cat = get_category($cat_id);
+                    ?>
+                    <?php if ($cat && !is_wp_error($cat)): ?>
+                      <div class="inline-flex items-center rounded px-2 py-1 font-semibold text-blue-600 text-xs bg-blue-100 mt-4">
+                        <?php echo esc_html($cat->name); ?>
+                      </div>
+                    <?php endif; ?>
+                </div>
+              </div>
+            </div>
+              <?php endwhile; ?>
+          <?php wp_reset_postdata(); ?>
+        <?php endif; ?>
       </div>
 </div>
 </section>
 
 <!-- CATEGORY -->
-<section class=" mx-auto bg-gray-100 px-4 py-10  my-20">
+<section class=" mx-auto bg-slate-100 px-4 py-10  my-20">
   <div class="max-w-6xl mx-auto">
       <div class="flex justify-between items-center mb-8">
         <h2 class="text-2xl font-bold text-gray-900">Kategori Populer</h2>
@@ -178,54 +160,32 @@ function getCardNewBook() {
       <!-- Check categori -->
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
         <!-- card BOOK -->
-        <?php
-        if($listCategories) : ?>
-            <?php
-            foreach ($listCategories as $categories) {
-
-              $categorieName = $categories->name;
-              $categorieCount = $categories->category_count;
-              $iconComponent = '<div class="justify-center flex mb-2">
-                      <div class="justify-center items-center flex p-1 bg-blue-300 text-blue-700 rounded-full w-8 h-8 " >
-                          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" class="h-5 w-5">
-                            <path fill="currentColor" d="M7 6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v18H7zm2 22a2 2 0 0 1-2-2h18.25A1.75 1.75 0 0 0 27 24.25V6a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v20a4 4 0 0 0 4 4h17a1 1 0 1 0 0-2zm1.75-22A1.75 1.75 0 0 0 9 7.75v2.5c0 .966.784 1.75 1.75 1.75h10.5A1.75 1.75 0 0 0 23 10.25v-2.5A1.75 1.75 0 0 0 21.25 6zm.25 4V8h10v2z"/>
-                          </svg>
-                      </div>
-                    </div>';
-              $nameComponent = '<span class="text-md text-black font-bold">' . $categorieName . '</span>';
-              $totalBookComponent = '<p class="text-sm text-gray-600">' . $categorieCount . ' buku</p>';
-
-              echo '<div class="group cursor-pointer shadow-md hover:shadow-lg transition-shadow bg-white rounded-xl">
-                      <div class="p-4 justify-center flex text-center items-center">
-                          <div class="relative ">
-                              <div class="space-y-1">' . $iconComponent . $nameComponent . $totalBookComponent . '</div>
-                          </div>
-                      </div>
-                  </div>';
-            }
-            ?>
-                <?php else : ?>
-            <?php echo 'tidak ada kategori'; ?>
+        <?php if ($listCategories && count($listCategories) > 0) : ?>
+          <?php foreach ($listCategories as $cat): 
+            $link = get_category_link($cat->term_id);
+            $name = esc_html($cat->name);
+            $count = intval($cat->category_count);
+          ?>
+            <a href="<?php echo esc_url($link); ?>" class="block group cursor-pointer shadow-md hover:shadow-lg transition-shadow bg-white rounded-xl">
+              <div class="p-4 flex flex-col items-center text-center space-y-1">
+                <div class="flex justify-center mb-2">
+                  <div class="flex items-center justify-center p-1 bg-blue-100 text-blue-700 rounded-full w-8 h-8">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 32 32" class="w-5 h-5">
+                      <path fill="currentColor" d="M7 6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v18H7zm2 22a2 2 0 0 1-2-2h18.25A1.75 1.75 0 0 0 27 24.25V6a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v20a4 4 0 0 0 4 4h17a1 1 0 1 0 0-2zm1.75-22A1.75 1.75 0 0 0 9 7.75v2.5c0 .966.784 1.75 1.75 1.75h10.5A1.75 1.75 0 0 0 23 10.25v-2.5A1.75 1.75 0 0 0 21.25 6zm.25 4V8h10v2z"/>
+                    </svg>
+                  </div>
+                </div>
+                <span class="text-md font-bold text-gray-900"><?php echo $name; ?></span>
+                <p class="text-sm text-gray-600"><?php echo $count; ?> buku</p>
+              </div>
+            </a>
+          <?php endforeach; ?>
+        <?php else : ?>
+          <p class="text-gray-500">Tidak ada kategori tersedia.</p>
         <?php endif; ?>
+
         <!-- </div> -->
   </div>
-</section>
-<section>
-  <?php if ( have_posts() ) {
-while ( have_posts(array(
-        'orderby' => 'id', // urutkan berdasarkan ID
-    'order'   => 'DESC', // ID terbesar (terbaru) di atas
-    'number'  => 2, // ambil 10 tag saja
-)) ) {
-
-the_post(); ?>
-
-<h2><?php the_title(); ?></h2> <br />
-
-<?php the_content(); ?>
-
-<?php }
-} ?>
 </section>
 
 <!-- BUKU TERBARU -->
@@ -243,10 +203,62 @@ the_post(); ?>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
       <!-- Kartu Buku -->
-      <?php getCardNewBook() ?>
-      <?php getCardNewBook() ?>
-      <?php getCardNewBook() ?>
+       <?php if($queryGet3Newer->have_posts()) : ?>
+        <?php while($queryGet3Newer->have_posts()) : $queryGet3Newer->the_post() ?>
 
+        <div class="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow p-4 relative">
+          <div class="flex gap-4">
+            <!-- Gambar -->
+            <div class="aspect-square max-w-20 bg-neutral-300 rounded-lg flex items-center justify-center">
+              <?php if (has_post_thumbnail()): ?>
+                    <?php the_post_thumbnail('small', ['class' => 'w-full h-full object-cover rounded-md']); ?>
+                  <?php else: ?>
+                    <div class="w-14 h-20 bg-white rounded shadow-sm m-2 flex items-center justify-center">
+                      <div class="w-7 h-10 bg-neutral-300 rounded shadow-sm mx-2"></div>
+                    </div>
+                  <?php endif; ?>
+            </div>
+
+            <!-- Konten -->
+            <div class="w-full">
+              <div class="flex items-center justify-between">
+                <h3 class="font-semibold text-gray-900 text-sm line-clamp-2 hover:text-blue-600 transition-colors">
+                  <a href="<?php the_permalink(); ?>" class="hover:underline">
+                    <?php the_title(); ?>
+                  </a>
+                </h3>
+                <span class="bg-yellow-100 text-xs text-gray-700 px-2 py-0.5 rounded">Baru</span>
+              </div>
+                <p class="text-xs text-gray-500"><?php echo esc_html(get_post_meta(get_the_ID(), '_penulis', true)); ?></p>
+                  <!-- {/* Rating */} -->
+                    <?php $rating = floatval(get_post_meta(get_the_ID(), '_rating', true)); ?>
+                    <?php if ($rating): ?>
+                      <div class="flex items-center space-x-1 text-yellow-400">
+                        <?php echo str_repeat('★', floor($rating)) . str_repeat('☆', 5 - floor($rating)); ?>
+                        <span class="text-sm text-black ml-1"><?php echo number_format($rating, 1); ?></span>
+                      </div>
+                    <?php endif; ?>
+                <p class="text-sm text-gray-600 line-clamp-2">{book.description}</p>
+                <div class="flex items-center justify-between mt-2">
+                 <!-- Category -->
+                      <?php
+                      $cat_id = get_post_meta(get_the_ID(), '_kategori', true);
+                      $cat = get_category($cat_id);
+                      ?>
+                      <?php if ($cat && !is_wp_error($cat)): ?>
+                        <div class="inline-flex items-center rounded-md px-2 py-0.5 font-light text-blue-500 text-xs bg-blue-100">
+                          <?php echo esc_html($cat->name); ?>
+                        </div>
+                      <?php endif; ?>
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400 hover:text-gray-600 cursor-pointer" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5v14l7-7 7 7V5H5z" />
+                  </svg>
+                </div>
+            </div>
+          </div>
+        </div>
+        <?php endwhile; ?>
+      <?php endif; ?>
     </div>
   </div>
 </section>
