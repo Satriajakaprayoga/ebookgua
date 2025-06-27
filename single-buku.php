@@ -1,7 +1,7 @@
 <?php get_header(); ?>
 <?php global $post; ?>
 
-<div class="max-w-6xl mx-auto px-4 pt-10">
+<div class="max-w-6xl mx-auto px-4 pt-10 mb-10">
     <div class="flex flex-col md:flex-row gap-10">
         <!-- Gambar Buku -->
         <div class="w-full md:w-1/2 md:pr-6">
@@ -16,14 +16,14 @@
         <div class="w-full md:w-1/2 md:pl-6">
             <h1 class="text-3xl font-bold mb-4"><?php the_title(); ?></h1>
             <!-- Opsi Pembelian -->
-            <div class="mb-6">
+            <!-- <div class="mb-6">
                 <p class="font-semibold mb-2">Opsi Pembelian</p>
                 <div class="flex flex-wrap gap-2">
                     <div class="border rounded-md px-4 py-2 font-semibold bg-gray-200">Satuan<br><span class="text-lg font-bold">Rp 109.000</span></div>
                     <div class="border rounded-md px-4 py-2 font-semibold">Premium Package<br><span class="text-lg font-bold">Rp 99.000</span></div>
                     <div class="border rounded-md px-4 py-2 font-semibold">Fiction Package<br><span class="text-lg font-bold">Rp 49.000</span></div>
                 </div>
-            </div>
+            </div> -->
 
             <!-- Info Aplikasi -->
             <!-- <div class="bg-gray-100 rounded-md p-4 mb-6 text-sm">
@@ -35,7 +35,23 @@
                 </div>
             </div> -->
 
-            <div class="flex flex-row justify-between">
+            <div class="mb-6">
+                <!-- <p class="font-semibold mb-2">Opsi Baca Ebook</p> -->
+                <div class="flex flex-wrap gap-4">
+                    <button class="rounded-md px-4 py-2 font-bold text-white transition-shadow shadow-md hover:shadow-lg bg-blue-500 hover:bg-blue-600">
+                        <div class="">
+                            Download E-book
+                        </div>
+                    </button>
+                    <button class="border rounded-md px-4 py-2 font-bold shadow-md hover:shadow-lg ">
+                        <div>Yuk Donasi
+                        </div>
+                    </button>
+                </div>
+            </div>
+
+            <p class="mb-2"><strong>Informasi Buku:</strong></p>
+            <div class="flex flex-row justify-between gap-4">
                 <!-- Informasi Buku -->
                  <div>
                      <div class="mb-4 text-sm text-gray-700">
@@ -71,13 +87,8 @@
                 </div>
                 </article>
             </div>
-
         </div>
     </div>
-
-
-
-
 </div>
 
 <?php get_footer(); ?>
