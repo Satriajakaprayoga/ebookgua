@@ -238,7 +238,7 @@ $queryGet3Newer = new WP_Query([...$args, 'posts_per_page' => 6]);
                         <span class="text-sm text-black ml-1"><?php echo number_format($rating, 1); ?></span>
                       </div>
                     <?php endif; ?>
-                <p class="text-sm text-gray-600 line-clamp-2">{book.description}</p>
+                <p class="text-sm text-gray-600 line-clamp-2"><?php echo esc_html(get_post_meta( get_the_ID(), '_deskripsi', true )) ?></p>
                 <div class="flex items-center justify-between mt-2">
                  <!-- Category -->
                       <?php
