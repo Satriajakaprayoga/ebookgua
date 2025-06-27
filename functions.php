@@ -383,7 +383,7 @@ function ebookgua_postbox_default()
 function ebookgua_render_buku_meta_box($post)
 {
   $penulis = get_post_meta($post->ID, '_penulis', true);
-  $rating = get_post_meta($post->ID, '_rating', true);
+  $rating = get_post_meta($post->ID, '_rating', true) ?: '5.0';
   $status = get_post_meta($post->ID, '_status', true);
   $kategori = get_post_meta($post->ID, '_kategori', true);
   $penerbit = get_post_meta($post->ID, '_penerbit', true);
