@@ -13,12 +13,12 @@ if (! defined('ABSPATH')) {
 ?>
 <!DOCTYPE html>
 <html <?php language_attributes(); ?>>
-
 <head>
   <meta charset="<?php bloginfo('charset'); ?>">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <?php wp_head(); ?>
 </head>
+<body <?php body_class(); ?>>
 
 
 <body <?php body_class(); ?>>
@@ -103,7 +103,19 @@ if (! defined('ABSPATH')) {
               <a href="<?php echo esc_url(wp_logout_url(home_url())); ?>" class="block px-4 py-2 text-sm text-red-600 hover:bg-red-100">Logout</a>
             </div>
           <?php else: ?>
-            <a href="<?php echo esc_url(wp_login_url()); ?>" class="text-blue-600 hover:underline text-sm">Login</a>
+                        <!-- Theme Toggle Button -->
+            <button id="theme-toggle" class="w-8 h-8 flex items-center justify-center rounded-full transition">
+              <!-- Icon: Sun (Yellow) -->
+              <svg id="icon-sun" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 m-2 text-yellow-400 hover:text-blue-600 block transition-colors" viewBox="0 0 20 20" fill="currentColor">
+                <path fill="currentColor" d="M12 18a6 6 0 1 1 0-12a6 6 0 0 1 0 12m0-2a4 4 0 1 0 0-8a4 4 0 0 0 0 8M11 1h2v3h-2zm0 19h2v3h-2zM3.515 4.929l1.414-1.414L7.05 5.636L5.636 7.05zM16.95 18.364l1.414-1.414l2.121 2.121l-1.414 1.414zm2.121-14.85l1.414 1.415l-2.121 2.121l-1.414-1.414zM5.636 16.95l1.414 1.414l-2.121 2.121l-1.414-1.414zM23 11v2h-3v-2zM4 11v2H1v-2z" />
+              </svg>
+
+              <!-- Icon: Moon (Black) -->
+              <svg id="icon-moon" xmlns="http://www.w3.org/2000/svg" class="hidden h-5 w-5 m-2 text-black hover:text-blue-600 transition-colors" viewBox="0 0 20 20" fill="currentColor">
+                <path fill="currentColor" d="M12 1.992a10 10 0 1 0 9.236 13.838c.341-.82-.476-1.644-1.298-1.31a6.5 6.5 0 0 1-6.864-10.787l.077-.08c.551-.63.113-1.653-.758-1.653h-.266l-.068-.006z" />
+              </svg>
+            </button>
+            <!-- <a href="<?php echo esc_url(wp_login_url()); ?>" class="text-blue-600 hover:underline text-sm">Login</a> -->
           <?php endif; ?>
 
           <!-- Mobile Menu Button -->
