@@ -1,4 +1,4 @@
-<footer class="p-4 bg-gray-200 text-center">
+<footer class="p-4 bg-blue-500 text-center text-white">
 <p>&copy; <?php echo date('Y'); ?> ebookgua</p>
 </footer>
 <?php wp_footer(); ?>
