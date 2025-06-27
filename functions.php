@@ -75,83 +75,85 @@ function ebookgua_render_form_page() {
   ?>
   <div class="wrap">
     <h1>Tambah Buku Manual</h1>
-<form method="post" action="" enctype="multipart/form-data">
-  <?php wp_nonce_field('ebookgua_save_manual_buku', 'ebookgua_nonce'); ?>
+  <form method="post" action="" enctype="multipart/form-data">
+    <?php wp_nonce_field('ebookgua_save_manual_buku', 'ebookgua_nonce'); ?>
+
+    <p>
+      <label for="judul">Judul Buku:</label><br>
+      <input type="text" name="judul" id="judul" class="regular-text" required>
+    </p>
+
+    <p>
+      <label for="penulis">Penulis:</label><br>
+      <input type="text" name="penulis" id="penulis" class="regular-text">
+    </p>
+
+
+    <p>
+      <label for="rating">Rating:</label><br>
+      <input type="number" placeholder="Ketik 0.0 sampai 5.0" name="rating" id="rating" step="0.1" min="0" max="5">
+    </p>
+
+    <p>
+      <label for="deskripsi">Deskripsi:</label><br>
+      <textarea name="deskripsi" id="deskripsi" rows="5" class="large-text"></textarea>
+    </p>
+    
+
+    <p>
+      <label for="bahasa">Bahasa:</label><br>
+      <select name="bahasa" id="bahasa" class="regular-text">
+        <option value="">-- Pilih Bahasa --</option>
+        <option value="Indonesia">Indonesia</option>
+        <option value="Inggris">Inggris</option>
+        <option value="Arab">Arab</option>
+        <option value="Mandarin">Mandarin</option>
+        <option value="Jepang">Jepang</option>
+        <option value="Jerman">Jerman</option>
+        <option value="Perancis">Perancis</option>
+      </select>
+    </p>
+
+    <p>
+      <label for="halaman">Jumlah Halaman:</label><br>
+      <input type="number" name="halaman" id="halaman" min="1" class="small-text">
+    </p>
+
+      <p>
+      <label for="status">Status :</label><br>
+      <select name="status" class="widefat">
+        <option value="Populer" >Populer</option>
+        <option value="Terbaru" >Terbaru</option>
+        <option value="Terlaris" >Terlaris</option>
+      </select>
+    </p>
 
   <p>
-    <label for="judul">Judul Buku:</label><br>
-    <input type="text" name="judul" id="judul" class="regular-text" required>
-  </p>
-
-  <p>
-    <label for="penulis">Penulis:</label><br>
-    <input type="text" name="penulis" id="penulis" class="regular-text">
-  </p>
-
-  <p>
-    <label for="rating">Rating:</label><br>
-    <input type="number" name="rating" id="rating" step="0.1" min="0" max="5">
-  </p>
-
-  <p>
-    <label for="deskripsi">Deskripsi:</label><br>
-    <textarea name="deskripsi" id="deskripsi" rows="5" class="large-text"></textarea>
-  </p>
-
-  <p>
-    <label for="bahasa">Bahasa:</label><br>
-    <select name="bahasa" id="bahasa" class="regular-text">
-      <option value="">-- Pilih Bahasa --</option>
-      <option value="Indonesia">Indonesia</option>
-      <option value="Inggris">Inggris</option>
-      <option value="Arab">Arab</option>
-      <option value="Mandarin">Mandarin</option>
-      <option value="Jepang">Jepang</option>
-      <option value="Jerman">Jerman</option>
-      <option value="Perancis">Perancis</option>
+    <label for="kategori">Kategori:</label><br>
+    <select name="kategori" id="kategori" class="regular-text">
+      <option value="">-- Pilih Kategori --</option>
+      <?php foreach ($categories as $cat): ?>
+        <option value="<?php echo esc_attr($cat->term_id); ?>">
+          <?php echo esc_html($cat->name); ?>
+        </option>
+      <?php endforeach; ?>
     </select>
-  </p>
-
-  <p>
-    <label for="halaman">Jumlah Halaman:</label><br>
-    <input type="number" name="halaman" id="halaman" min="1" class="small-text">
   </p>
 
     <p>
-    <label for="status">Status :</label><br>
-    <select name="status" class="widefat">
-      <option value="Populer" >Populer</option>
-      <option value="Terbaru" >Terbaru</option>
-      <option value="Terlaris" >Terlaris</option>
-    </select>
-  </p>
+      <label for="thumbnail">Thumbnail (Gambar):</label><br>
+      <input type="file" name="thumbnail" id="thumbnail" accept="image/*">
+    </p>
 
-<p>
-  <label for="kategori">Kategori:</label><br>
-  <select name="kategori" id="kategori" class="regular-text">
-    <option value="">-- Pilih Kategori --</option>
-    <?php foreach ($categories as $cat): ?>
-      <option value="<?php echo esc_attr($cat->term_id); ?>">
-        <?php echo esc_html($cat->name); ?>
-      </option>
-    <?php endforeach; ?>
-  </select>
-</p>
+    <p>
+      <label for="pdf">File PDF:</label><br>
+      <input type="file" name="pdf" id="pdf" accept="application/pdf">
+    </p>
 
-  <p>
-    <label for="thumbnail">Thumbnail (Gambar):</label><br>
-    <input type="file" name="thumbnail" id="thumbnail" accept="image/*">
-  </p>
-
-  <p>
-    <label for="pdf">File PDF:</label><br>
-    <input type="file" name="pdf" id="pdf" accept="application/pdf">
-  </p>
-
-  <p>
-    <input type="submit" name="ebookgua_submit_buku" class="button button-primary" value="Simpan Buku">
-  </p>
-</form>
+    <p>
+      <input type="submit" name="ebookgua_submit_buku" class="button button-primary" value="Simpan Buku">
+    </p>
+  </form>
 
   </div>
   <?php
@@ -274,6 +276,32 @@ function ebookgua_save_buku_meta($post_id)
   if (isset($_POST['kategori'])) {
     update_post_meta($post_id, '_kategori', intval($_POST['kategori']));
   }
+  if (isset($_POST['bahasa'])) {
+    update_post_meta($post_id, '_bahasa', sanitize_text_field($_POST['bahasa']));
+  }
+
+  if (isset($_POST['penerbit'])) {
+    update_post_meta($post_id, '_penerbit', sanitize_text_field($_POST['penerbit']));
+  }
+
+  if (isset($_POST['tanggal_rilis'])) {
+    update_post_meta($post_id, '_tanggal_rilis', sanitize_text_field($_POST['tanggal_rilis']));
+  }
+
+  if (isset($_POST['halaman'])) {
+    update_post_meta($post_id, '_halaman', intval($_POST['halaman']));
+  }
+  if (isset($_POST['deskripsi'])) {
+    update_post_meta($post_id, '_deskripsi', sanitize_text_field($_POST['deskripsi']));
+  }
+
+  if (!empty($_FILES['pdf']['tmp_name'])) {
+  require_once ABSPATH . 'wp-admin/includes/file.php';
+    $pdf_id = media_handle_upload('pdf', $post_id);
+    if (!is_wp_error($pdf_id)) {
+      update_post_meta($post_id, '_pdf', wp_get_attachment_url($pdf_id));
+    }
+  }
 }
 
 
@@ -347,12 +375,24 @@ function ebookgua_render_buku_meta_box($post)
   $rating = get_post_meta($post->ID, '_rating', true);
   $status = get_post_meta($post->ID, '_status', true);
   $kategori = get_post_meta($post->ID, '_kategori', true);
+  $penerbit = get_post_meta($post->ID, '_penerbit', true);
+  $rilis    = get_post_meta($post->ID, '_tanggal_rilis', true);
+  $halaman  = get_post_meta($post->ID, '_halaman', true);
+  $deskripsi  = get_post_meta($post->ID, '_deskripsi', true);
+  $bahasa   = get_post_meta($post->ID, '_bahasa', true);
+
   $categories = get_categories(['hide_empty' => false]);
+    // Dapatkan URL PDF jika sudah diupload sebelumnya
+  $pdf_url = get_post_meta($post->ID, '_pdf', true);
 
 ?>
   <p>
     <label for="penulis">Penulis:</label><br>
     <input type="text" name="penulis" value="<?php echo esc_attr($penulis); ?>" class="widefat" />
+  </p>
+  <p>
+    <label for="deskripsi">Deskripsi:</label><br>
+    <input type="text" name="deskripsi" value="<?php echo esc_attr($deskripsi); ?>" class="widefat" />
   </p>
 
   <p>
@@ -378,6 +418,40 @@ function ebookgua_render_buku_meta_box($post)
         </option>
       <?php endforeach; ?>
     </select>
+  </p>
+    <p>
+    <label for="bahasa">Bahasa:</label><br>
+    <select name="bahasa" class="widefat">
+      <option value="">-- Pilih Bahasa --</option>
+      <option value="Indonesia" <?php selected($bahasa, 'Indonesia'); ?>>Indonesia</option>
+      <option value="Inggris" <?php selected($bahasa, 'Inggris'); ?>>Inggris</option>
+      <option value="Arab" <?php selected($bahasa, 'Arab'); ?>>Arab</option>
+      <option value="Mandarin" <?php selected($bahasa, 'Mandarin'); ?>>Mandarin</option>
+      <option value="Jepang" <?php selected($bahasa, 'Jepang'); ?>>Jepang</option>
+      <option value="Jerman" <?php selected($bahasa, 'Jerman'); ?>>Jerman</option>
+      <option value="Perancis" <?php selected($bahasa, 'Perancis'); ?>>Perancis</option>
+    </select>
+  </p>
+   <p>
+    <label for="penerbit">Penerbit:</label><br>
+    <input type="text" name="penerbit" value="<?php echo esc_attr($penerbit); ?>" class="widefat" />
+  </p>
+
+  <p>
+    <label for="tanggal_rilis">Tanggal Rilis:</label><br>
+    <input type="date" name="tanggal_rilis" value="<?php echo esc_attr($rilis); ?>" class="widefat" />
+  </p>
+
+  <p>
+    <label for="halaman">Jumlah Halaman:</label><br>
+    <input type="number" name="halaman" value="<?php echo esc_attr($halaman); ?>" class="widefat" min="1" />
+  </p>
+  <p>
+    <label for="pdf">File PDF:</label><br>
+    <input type="file" name="pdf" accept="application/pdf" />
+    <?php if ($pdf_url): ?>
+      <p><a href="<?php echo esc_url($pdf_url); ?>" target="_blank">Lihat PDF saat ini</a></p>
+    <?php endif; ?>
   </p>
 <?php
 }
