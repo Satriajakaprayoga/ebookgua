@@ -9,7 +9,12 @@ function ebookgua_enqueue_scripts()
 
 function ebookgua_theme_setup()
 {
-  add_theme_support('post-thumbnails');
+    // Tambah dukungan SEO WordPress (agar Rank Math bisa bekerja)
+  add_theme_support('title-tag');          // Membiarkan Rank Math mengatur <title>
+  add_theme_support('post-thumbnails');    // Untuk thumbnail image
+  add_theme_support('html5', [             // Gunakan tag HTML5 untuk struktur yang lebih SEO-friendly
+    'search-form', 'comment-form', 'comment-list', 'gallery', 'caption', 'style', 'script',
+  ]);
 }
 
 
@@ -467,4 +472,6 @@ add_action('save_post', 'ebookgua_save_buku_meta');
 add_action('init', 'ebookgua_register_menus');
 add_action('init', 'ebookgua_register_taxonomies_for_buku');
 add_action('after_setup_theme', 'ebookgua_theme_setup');
+
+
 ?>
