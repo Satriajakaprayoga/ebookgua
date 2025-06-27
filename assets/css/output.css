@@ -1554,10 +1554,6 @@ select {
   max-width: 48rem;
 }
 
-.max-w-64 {
-  max-width: 16rem;
-}
-
 .max-w-6xl {
   max-width: 72rem;
 }
@@ -1566,12 +1562,12 @@ select {
   max-width: 80rem;
 }
 
-.max-w-none {
-  max-width: none;
-}
-
 .max-w-96 {
   max-width: 24rem;
+}
+
+.max-w-none {
+  max-width: none;
 }
 
 .flex-1 {
@@ -1625,10 +1621,6 @@ select {
 
 .gap-10 {
   gap: 2.5rem;
-}
-
-.gap-2 {
-  gap: 0.5rem;
 }
 
 .gap-3 {
@@ -1803,6 +1795,11 @@ select {
   padding-right: 1rem;
 }
 
+.px-5 {
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+}
+
 .px-6 {
   padding-left: 1.5rem;
   padding-right: 1.5rem;
@@ -1846,11 +1843,6 @@ select {
 .py-4 {
   padding-top: 1rem;
   padding-bottom: 1rem;
-}
-
-.px-5 {
-  padding-left: 1.25rem;
-  padding-right: 1.25rem;
 }
 
 .pb-4 {
