@@ -17,9 +17,7 @@ function ebookgua_theme_setup()
   ]);
 }
 
-
-// registry nav menus
-
+// registry nav menus primary menu
 function ebookgua_register_menus()
 {
   register_nav_menus([
@@ -32,7 +30,6 @@ function ebookgua_register_menus()
 function mytheme_enqueue_styles() {
     wp_enqueue_style('theme-style', get_template_directory_uri() . '/assets/css/output.css', [], '1.0');
 }
-add_action('wp_enqueue_scripts', 'mytheme_enqueue_styles');
 
 
 // ================ BUKU BLOCK  START ============================ 
@@ -71,7 +68,6 @@ function ebookgua_add_custom_submenu() {
     'ebookgua_render_form_page'     // Callback function
   );
 }
-add_action('admin_menu', 'ebookgua_add_custom_submenu');
 
 function ebookgua_render_form_page() {
 
@@ -225,10 +221,6 @@ function ebookgua_handle_manual_buku_submit() {
     }
   }
 }
-add_action('admin_init', 'ebookgua_handle_manual_buku_submit');
-
-
-
 
 // register taxonomies
 function ebookgua_register_taxonomies_for_buku()
@@ -253,18 +245,25 @@ function ebookgua_add_meta_boxes()
     'Detail Buku',
     'ebookgua_render_buku_meta_box',
     'buku',
-    'normal',
-    'high'
+    'side',
+    'low'
+  );
+
+  add_meta_box(
+    'ebookgua_post_meta',
+    'Detail Post',
+    'ebookgua_render_buku_meta_box',
+    'post',
+    'side',
+    'low'
   );
 }
 
-function ebookgua_save_buku_meta($post_id)
+
+// handle save post meta
+function ebookgua_save_post_meta($post_id)
 {
   if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) return;
-
-  // Batasi hanya untuk post type buku
-  $post_type = get_post_type($post_id);
-  if ($post_type !== 'buku') return;
 
   if (isset($_POST['penulis'])) {
     update_post_meta($post_id, '_penulis', sanitize_text_field($_POST['penulis']));
@@ -378,8 +377,6 @@ function ebookgua_postbox_default()
 <?php
 }
 
-
-
 function ebookgua_render_buku_meta_box($post)
 {
   $penulis = get_post_meta($post->ID, '_penulis', true);
@@ -468,16 +465,55 @@ function ebookgua_render_buku_meta_box($post)
 }
 
 
-
+  
 
 // action 
 add_action('wp_enqueue_scripts', 'ebookgua_enqueue_scripts');
 add_action('init', 'ebookgua_register_post_type');
 add_action('add_meta_boxes', 'ebookgua_add_meta_boxes');
-add_action('save_post', 'ebookgua_save_buku_meta');
+add_action('save_post', 'ebookgua_save_post_meta');
 add_action('init', 'ebookgua_register_menus');
 add_action('init', 'ebookgua_register_taxonomies_for_buku');
 add_action('after_setup_theme', 'ebookgua_theme_setup');
+add_action('admin_init', 'ebookgua_handle_manual_buku_submit');
+add_action('admin_menu', 'ebookgua_add_custom_submenu');
+add_action('wp_enqueue_scripts', 'mytheme_enqueue_styles');
 
 
 ?>
+
+<?php
+function ebookgua_comment_template($comment, $args, $depth)
+{
+    $tag = ($args['style'] === 'div') ? 'div' : 'li';
+    ?>
+    <<?php echo $tag; ?> id="comment-<?php comment_ID(); ?>" <?php comment_class('border border-gray-200 rounded-lg p-4'); ?>>
+
+        <div class="flex items-start gap-4">
+            <div class="flex-shrink-0">
+                <?php echo get_avatar($comment, 48, '', '', ['class' => 'rounded-full']); ?>
+            </div>
+            <div class="flex-1">
+                <div class="mb-1">
+                    <strong class="text-sm text-gray-900"><?php comment_author(); ?></strong>
+                    <span class="text-xs text-gray-500 ml-2"><?php comment_date(); ?></span>
+                </div>
+                <div class="text-sm text-gray-700">
+                    <?php comment_text(); ?>
+                </div>
+                <div class="mt-2">
+                    <?php
+                    comment_reply_link(array_merge($args, [
+                        'reply_text' => 'Balas',
+                        'depth' => $depth,
+                        'max_depth' => $args['max_depth'],
+                        'class' => 'text-xs text-blue-600 hover:underline',
+                    ]));
+                    ?>
+                </div>
+            </div>
+        </div>
+
+    </<?php echo $tag; ?>>
+<?php
+}
