@@ -464,7 +464,27 @@ function ebookgua_render_buku_meta_box($post)
 <?php
 }
 
+function ebookgua_customize_footer($wp_customize) {
+  $DEFAULT_FOOTER = '© '. date('Y') .' | Powered by ebookgua';
 
+    // Section Footer
+    $wp_customize->add_section('footer_section', array(
+        'title'    => __('Footer', 'ebookgua'),
+        'priority' => 130,
+    ));
+
+    // Footer 
+    $wp_customize->add_setting('footer_text', array(
+        'default'           => $DEFAULT_FOOTER,
+        'sanitize_callback' => 'wp_kses_post', // izinkan HTML terbatas
+    ));
+
+    $wp_customize->add_control('footer_text', array(
+        'label'   => __('Footer Text', 'ebookgua'),
+        'section' => 'footer_section',
+        'type'    => 'textarea',
+    ));
+}
   
 
 // action 
@@ -478,7 +498,7 @@ add_action('after_setup_theme', 'ebookgua_theme_setup');
 add_action('admin_init', 'ebookgua_handle_manual_buku_submit');
 add_action('admin_menu', 'ebookgua_add_custom_submenu');
 add_action('wp_enqueue_scripts', 'mytheme_enqueue_styles');
-
+add_action('customize_register', 'ebookgua_customize_footer');
 
 ?>
 
