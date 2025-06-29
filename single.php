@@ -14,6 +14,10 @@
                     <div class="mb-6">
                         <?php the_post_thumbnail('full', ['class' => 'w-full h-auto rounded-lg shadow-lg']); ?>
                     </div>
+                    <?php else : ?>
+                        <div class="mb-6 aspect-[3/4] bg-slate-200 rounded flex items-center justify-center ">
+                            <div class="w-20 h-20 bg-white rounded shadow-sm"></div>
+                        </div>
                 <?php endif; ?>
             </div>
 
@@ -53,13 +57,17 @@
                             <p><strong>Penulis:</strong> <?php echo get_post_meta(get_the_ID(), '_penulis', true); ?></p>
                             <p><strong>Rating:</strong> <?php echo get_post_meta(get_the_ID(), '_rating', true); ?></p>
                             <p><strong>Status:</strong> <?php echo get_post_meta(get_the_ID(), '_status', true); ?></p>
+                            <p><strong>Kategori:</strong>
                             <?php
                             $cat_id = get_post_meta(get_the_ID(), '_kategori', true);
                             $cat_obj = get_category($cat_id);
-                            if ($cat_obj):
+                            if (isset($cat_obj->name)):
                             ?>
-                                <p><strong>Kategori:</strong> <?php echo esc_html($cat_obj->name); ?></p>
+                                 <?php echo esc_html($cat_obj->name); ?>
+                                 <?php else :?>
+                                    -
                             <?php endif; ?>
+                            </p>
                             <p><strong>Bahasa:</strong> <?php echo get_post_meta(get_the_ID(), '_bahasa' , true); ?></p>
                         </div>
                     </div>
