@@ -13,7 +13,8 @@
         <?php endwhile; ?>
       </div>
     <?php else : ?>
-      <p class="text-gray-600">Maaf, tidak ada hasil ditemukan.</p>
+      <p class="text-gray-600">Maaf, tidak ada hasil ditemukan.
+      </p>
     <?php endif; ?>
 
   <?php elseif (is_tag()) : ?>

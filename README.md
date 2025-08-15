@@ -1,4 +1,23 @@
-# 📘 Dokumentasi Pembuatan Custom Theme WordPress dengan Tailwind CSS
+# Tata Cara Install Theme ebookgua
+untuk installasi theme ebookgua ada 2 cara yaitu dengan download format zip atau langsung clone repo pada wordpress
+
+## install di wordpres
+1. donwload repo dengan cara klik tombol code diatas -> Download ZIP 
+2. masuk ke admin panel wordpress
+3. setelah itu upload ZIPnya langsung -> pilih Appearence -> themes -> Add Theme -> Upload Theme -> chose file or drag file ZIP
+4. klik install dan done
+
+## install dengan cara terminal
+1. masuk ke server wordpress menggunakan ssh
+2. masuk masuk ke directory wordpress -> wp-content-> themes
+3. clone repositori 
+~~~
+git clone https://github.com/Satriajakaprayoga/ebookgua.git
+~~~
+4. done
+
+
+# 📘 Dokumentasi Instalasi dan Pembuatan Custom Theme WordPress dengan Tailwind CSS
 
 Dokumentasi ini ditulis untuk membantu siapapun dalam membuat tema WordPress kustom menggunakan Tailwind CSS tanpa plugin tambahan, dengan konfigurasi modern dan optimal untuk performa.
 
