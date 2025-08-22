@@ -518,6 +518,44 @@ function ebookgua_customize_footer($wp_customize)
     ]);
 }
 
+// Hook untuk cek update theme
+add_filter('pre_set_site_transient_update_themes', 'ebookgua_check_update');
+
+function ebookgua_check_update($transient)
+{
+    if (empty($transient->checked)) {
+        return $transient;
+    }
+
+    // URL GitHub repo theme (ganti dengan repo kamu)
+    $remote_url = 'https://raw.githubusercontent.com/Satriajakaprayoga/ebookgua/main/style.css';
+
+    // Ambil style.css terbaru dari GitHub
+    $response = wp_remote_get($remote_url);
+
+    if (! is_wp_error($response) && $response['response']['code'] == 200) {
+        $remote_style = wp_remote_retrieve_body($response);
+
+        // Ambil versi dari style.css di GitHub
+        if (preg_match('/Version:\s*(.*)/i', $remote_style, $matches)) {
+            $remote_version = trim($matches[1]);
+            $current_version = wp_get_theme()->get('Version');
+
+            // Bandingkan versi
+            if (version_compare($remote_version, $current_version, '>')) {
+                $transient->response['ebookgua'] = [
+                    'theme' => 'ebookgua',
+                    'new_version' => $remote_version,
+                    'url' => 'https://github.com/Satriajakaprayoga/ebookgua',
+                    'package' => 'https://github.com/Satriajakaprayoga/ebookgua/archive/refs/heads/main.zip',
+                ];
+            }
+        }
+    }
+
+    return $transient;
+}
+
 // action
 add_action('wp_enqueue_scripts', 'ebookgua_enqueue_scripts');
 add_action('init', 'ebookgua_register_post_type');
