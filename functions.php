@@ -57,8 +57,8 @@ function ebookgua_register_post_type()
 
     register_post_type('blog', [
         'labels' => [
-            'name' => 'blog',
-            'singular_name' => 'blog',
+            'name' => 'Blog',
+            'singular_name' => 'Blog',
             'add_new_item' => 'Tambah Blog Baru',
             'edit_item' => 'Edit Blog',
             'new_item' => 'Blog Baru',
@@ -67,8 +67,8 @@ function ebookgua_register_post_type()
         ],
         'public' => true,
         'has_archive' => true,
-        'rewrite' => ['slug' => 'Blog'],
-        'menu_icon' => 'dashicons-book-alt',
+        'rewrite' => ['slug' => 'blog'],
+        'menu_icon' => 'dashicons-admin-post',
         'supports' => ['title', 'editor', 'thumbnail', 'excerpt', 'comments', 'revisions', 'custom-fields', 'author'],
         'taxonomies' => ['category', 'post_tag'],
         'show_in_rest' => true, // penting untuk Gutenberg & REST API

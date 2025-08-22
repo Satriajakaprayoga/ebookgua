@@ -1,12 +1,14 @@
 <form role="search" method="get" action="<?php echo esc_url(home_url('/')) ?>">
-  <input type="hidden" name="s" value="<?php echo esc_attr( get_search_query() ); ?>">
+  <input type="hidden" name="s" value="<?php echo esc_attr(get_search_query()); ?>">
+    <!-- filter ke post type buku -->
+  <input type="hidden" name="post_type" value="buku">
   <div class="relative">
     <Input
       type="search"
-      placeholder="<?php echo esc_attr( apply_filters( 'generate_search_placeholder', _x( 'Search &hellip;', 'placeholder', 'ebookgua' ) ) ); ?>"
+      placeholder="<?php echo esc_attr(apply_filters('generate_search_placeholder', _x('Search &hellip;', 'placeholder', 'ebookgua'))); ?>"
       value="<?php echo get_search_query() ?>"
       name="s"
-      title="<?php echo esc_attr( apply_filters( 'generate_search_label', _x( 'Search for:', 'label', 'ebookgua' ) ) ); ?>"
+      title="<?php echo esc_attr(apply_filters('generate_search_label', _x('Search for:', 'label', 'ebookgua'))); ?>"
       class="w-full pl-4 pr-12 py-3 text-lg rounded-full border-gray-300 focus:border-blue-500 focus:ring-blue-500 shadow-md" />
     <Button
       size="icon"

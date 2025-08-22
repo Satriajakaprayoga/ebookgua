@@ -85,12 +85,14 @@ if ($related->have_posts()) {
                             <?php the_post_thumbnail('medium', ['class' => 'w-full h-48 object-cover rounded']); ?>
                         </a>
                     <?php } ?>
-                    <h3 class="text-lg font-semibold mt-3">
+                    <h3 class="text-lg font-semibold mt-3 capitalize">
                         <a href="<?php the_permalink(); ?>" class="hover:text-blue-500">
                             <?php the_title(); ?>
                         </a>
                     </h3>
-                    <p class="text-sm text-gray-500"><?php echo get_the_date('j F Y'); ?></p>
+
+                    <p class="text-sm font-thin capitalize">categori</p>
+                    <p class="text-xs text-gray-500"><?php echo get_the_date('j F Y'); ?></p>
                 </div>
             <?php }
     wp_reset_postdata();

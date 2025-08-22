@@ -2,12 +2,9 @@
 
 /**
  * The template for displaying the header.
- *
- * @package GeneratePress
  */
-
 if (! defined('ABSPATH')) {
-  exit; // Exit if accessed directly.
+    exit; // Exit if accessed directly.
 }
 
 ?>
@@ -35,50 +32,68 @@ if (! defined('ABSPATH')) {
         </div>
 
         <!-- TENGAH: Navbar (desktop) -->
-        <nav class="hidden md:flex flex-1 justify-center items-center space-x-6 relative group">
-          <!-- <a href="#benefits" class="text-gray-700 hover:text-blue-600 font-medium">Manfaat</a>
-        <a href="#download" class="text-gray-700 hover:text-blue-600 font-medium">Download</a> -->
-          <?php
-          wp_nav_menu([
-            'theme_location' => 'primary',
-            'container' => false,
-            'menu_class' => 'flex items-center space-x-6',
-            'fallback_cb' => false,
-            'walker' => new class extends Walker_Nav_Menu {
-              function start_lvl(&$output, $depth = 0, $args = null)
-              {
-                $output .= '<ul class="absolute mt-2 bg-white shadow-lg rounded-lg py-2 w-40 hidden group-hover:block z-50">';
-              }
-              function end_lvl(&$output, $depth = 0, $args = null)
-              {
-                $output .= '</ul>';
-              }
-              function start_el(&$output, $item, $depth = 0, $args = null, $id = 0)
-              {
-                $classes = 'text-gray-700 hover:text-blue-600 font-medium transition-colors';
-                if ($depth > 0) {
-                  $classes = 'block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100';
-                }
-                $output .= sprintf(
-                  '<li><a href="%s" class="%s">%s</a>',
-                  esc_url($item->url),
-                  $classes,
-                  esc_html($item->title)
-                );
-              }
-              function end_el(&$output, $item, $depth = 0, $args = null)
-              {
-                $output .= '</li>';
-              }
-            }
-          ]);
-          ?>
-        </nav>
+<nav class="hidden md:flex flex-1 justify-center items-center space-x-6 relative group">
+    <ul class="flex items-center space-x-6">
+        <!-- Default required items -->
+        <li>
+            <a href="<?php echo esc_url(home_url('/')); ?>" class="text-gray-700 hover:text-blue-600 font-medium">
+                Home
+            </a>
+        </li>
+        <li>
+            <a href="<?php echo esc_url(home_url('/blog')); ?>" class="text-gray-700 hover:text-blue-600 font-medium">
+                Blog
+            </a>
+        </li>
+
+        <!-- Merge with Primary Menu if exists -->
+        <?php
+        if (has_nav_menu('primary')) {
+            wp_nav_menu([
+                'theme_location' => 'primary',
+                'container' => false,
+                'items_wrap' => '%3$s', // output only <li> items, no extra <ul>
+                'walker' => new class extends Walker_Nav_Menu
+                {
+                    public function start_lvl(&$output, $depth = 0, $args = null)
+                    {
+                        $output .= '<ul class="absolute mt-2 bg-white shadow-lg rounded-lg py-2 w-40 hidden group-hover:block z-50">';
+                    }
+
+                    public function end_lvl(&$output, $depth = 0, $args = null)
+                    {
+                        $output .= '</ul>';
+                    }
+
+                    public function start_el(&$output, $item, $depth = 0, $args = null, $id = 0)
+                    {
+                        $classes = 'text-gray-700 hover:text-blue-600 font-medium transition-colors';
+                        if ($depth > 0) {
+                            $classes = 'block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100';
+                        }
+                        $output .= sprintf(
+                            '<li><a href="%s" class="%s">%s</a>',
+                            esc_url($item->url),
+                            $classes,
+                            esc_html($item->title)
+                        );
+                    }
+
+                    public function end_el(&$output, $item, $depth = 0, $args = null)
+                    {
+                        $output .= '</li>';
+                    }
+                },
+            ]);
+        }
+?>
+    </ul>
+</nav>
 
         <!-- KANAN: Account -->
         <div class="relative flex items-center space-x-4">
-          <?php if (is_user_logged_in()):
-            $current_user = wp_get_current_user(); ?>
+          <?php if (is_user_logged_in()) {
+              $current_user = wp_get_current_user(); ?>
             <!-- Theme Toggle Button -->
             <button id="theme-toggle" class="w-8 h-8 flex items-center justify-center rounded-full transition">
               <!-- Icon: Sun (Yellow) -->
@@ -102,7 +117,7 @@ if (! defined('ABSPATH')) {
               <a href="<?php echo esc_url(get_edit_user_link()); ?>" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Profil Saya</a>
               <a href="<?php echo esc_url(wp_logout_url(home_url())); ?>" class="block px-4 py-2 text-sm text-red-600 hover:bg-red-100">Logout</a>
             </div>
-          <?php else: ?>
+          <?php } else { ?>
                         <!-- Theme Toggle Button -->
             <button id="theme-toggle" class="w-8 h-8 flex items-center justify-center rounded-full transition">
               <!-- Icon: Sun (Yellow) -->
@@ -116,7 +131,7 @@ if (! defined('ABSPATH')) {
               </svg>
             </button>
             <!-- <a href="<?php echo esc_url(wp_login_url()); ?>" class="text-blue-600 hover:underline text-sm">Login</a> -->
-          <?php endif; ?>
+          <?php } ?>
 
           <!-- Mobile Menu Button -->
           <button id="mobile-menu-toggle" class="md:hidden text-gray-700 focus:outline-none">
@@ -135,39 +150,43 @@ if (! defined('ABSPATH')) {
     <a href="#download" class="block py-2 text-gray-700 hover:text-blue-600 font-medium">Download</a> -->
       <?php
       wp_nav_menu([
-        'theme_location' => 'primary',
-        'container' => false,
-        'menu_class' => '',
-        'fallback_cb' => false,
-        'walker' => new class extends Walker_Nav_Menu {
-          function start_lvl(&$output, $depth = 0, $args = null)
+          'theme_location' => 'primary',
+          'container' => false,
+          'menu_class' => '',
+          'fallback_cb' => false,
+          'walker' => new class extends Walker_Nav_Menu
           {
-            $output .= '<ul class="pl-4">';
-          }
-          function end_lvl(&$output, $depth = 0, $args = null)
-          {
-            $output .= '</ul>';
-          }
-          function start_el(&$output, $item, $depth = 0, $args = null, $id = 0)
-          {
-            $classes = 'block py-2 text-gray-700 hover:text-blue-600';
-            if ($depth > 0) {
-              $classes = 'block py-1 pl-4 text-sm text-gray-600 hover:text-blue-500';
-            }
-            $output .= sprintf(
-              '<li><a href="%s" class="%s">%s</a>',
-              esc_url($item->url),
-              $classes,
-              esc_html($item->title)
-            );
-          }
-          function end_el(&$output, $item, $depth = 0, $args = null)
-          {
-            $output .= '</li>';
-          }
-        }
+              public function start_lvl(&$output, $depth = 0, $args = null)
+              {
+                  $output .= '<ul class="pl-4">';
+              }
+
+              public function end_lvl(&$output, $depth = 0, $args = null)
+              {
+                  $output .= '</ul>';
+              }
+
+              public function start_el(&$output, $item, $depth = 0, $args = null, $id = 0)
+              {
+                  $classes = 'block py-2 text-gray-700 hover:text-blue-600';
+                  if ($depth > 0) {
+                      $classes = 'block py-1 pl-4 text-sm text-gray-600 hover:text-blue-500';
+                  }
+                  $output .= sprintf(
+                      '<li><a href="%s" class="%s">%s</a>',
+                      esc_url($item->url),
+                      $classes,
+                      esc_html($item->title)
+                  );
+              }
+
+              public function end_el(&$output, $item, $depth = 0, $args = null)
+              {
+                  $output .= '</li>';
+              }
+          },
       ]);
-      ?>
+?>
     </div>
   </header>
 
