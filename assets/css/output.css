@@ -1332,6 +1332,10 @@ select {
   z-index: 50;
 }
 
+.col-span-full {
+  grid-column: 1 / -1;
+}
+
 .m-2 {
   margin: 0.5rem;
 }
@@ -1432,6 +1436,10 @@ select {
 
 .mt-4 {
   margin-top: 1rem;
+}
+
+.mt-6 {
+  margin-top: 1.5rem;
 }
 
 .mt-8 {
