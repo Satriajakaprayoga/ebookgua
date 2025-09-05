@@ -145,56 +145,70 @@ if (! defined('ABSPATH')) {
     </div>
 
     <!-- Mobile Menu -->
-    <div id="mobile-menu" class="md:hidden hidden px-4 pb-4 space-y-2">
-      <!-- <a href="#benefits" class="block py-2 text-gray-700 hover:text-blue-600 font-medium">Manfaat</a>
-    <a href="#download" class="block py-2 text-gray-700 hover:text-blue-600 font-medium">Download</a> -->
+    <nav id="mobile-menu" class="px-4 pb-4 space-y-2 relative group">
+          <ul class="list-none">
+        <li>
+            <a href="<?php echo esc_url(home_url('/')); ?>" class="block text-gray-700 font-medium py-2">
+                Home
+            </a>
+        </li>
+        <li>
+            <a href="<?php echo esc_url(home_url('/blog')); ?>" class=" block text-gray-700 font-medium py-2">
+                Blog
+            </a>
+        </li>
       <?php
-      wp_nav_menu([
-          'theme_location' => 'primary',
-          'container' => false,
-          'menu_class' => '',
-          'fallback_cb' => false,
-          'walker' => new class extends Walker_Nav_Menu
-          {
-              public function start_lvl(&$output, $depth = 0, $args = null)
-              {
-                  $output .= '<ul class="pl-4">';
-              }
+          if (has_nav_menu('primary')) {
+              wp_nav_menu([
+                  'theme_location' => 'primary',
+                  'container' => false,
+                  'menu_class' => '',
+                  'item_wrap' => '%3$s',
+                  // 'fallback_cb' => false,
+                  'walker' => new class extends Walker_Nav_Menu
+                  {
+                      public function start_lvl(&$output, $depth = 0, $args = null)
+                      {
+                          $output .= '<ul class="list-none">';
+                      }
 
-              public function end_lvl(&$output, $depth = 0, $args = null)
-              {
-                  $output .= '</ul>';
-              }
+                      public function end_lvl(&$output, $depth = 0, $args = null)
+                      {
+                          $output .= '</ul>';
+                      }
 
-              public function start_el(&$output, $item, $depth = 0, $args = null, $id = 0)
-              {
-                  $classes = 'block py-2 text-gray-700 hover:text-blue-600';
-                  if ($depth > 0) {
-                      $classes = 'block py-1 pl-4 text-sm text-gray-600 hover:text-blue-500';
-                  }
-                  $output .= sprintf(
-                      '<li><a href="%s" class="%s">%s</a>',
-                      esc_url($item->url),
-                      $classes,
-                      esc_html($item->title)
-                  );
-              }
+                      public function start_el(&$output, $item, $depth = 0, $args = null, $id = 0)
+                      {
+                          $classes = 'block py-2 text-gray-700 hover:text-blue-600';
+                          if ($depth > 0) {
+                              $classes = 'block py-1 pl-4 text-sm text-gray-600 hover:text-blue-500';
+                          }
+                          $output .= sprintf(
+                              '<li><a href="%s" class="%s">%s</a>',
+                              esc_url($item->url),
+                              $classes,
+                              esc_html($item->title)
+                          );
+                      }
 
-              public function end_el(&$output, $item, $depth = 0, $args = null)
-              {
-                  $output .= '</li>';
-              }
-          },
-      ]);
+                      public function end_el(&$output, $item, $depth = 0, $args = null)
+                      {
+                          $output .= '</li>';
+                      }
+                  },
+              ]);
+          }
 ?>
-    </div>
+         </ul>
+    </nav>
   </header>
 
 
   <script>
     // Mobile menu toggle
     document.getElementById('mobile-menu-toggle')?.addEventListener('click', () => {
-      document.getElementById('mobile-menu')?.classList.toggle('hidden');
+      document.getElementById('mobile-menu')?.className = 'hidden';
+
     });
 
     // Avatar dropdown toggle
@@ -202,6 +216,9 @@ if (! defined('ABSPATH')) {
     const dropdown = document.getElementById('user-dropdown');
 
     if (avatarBtn && dropdown) {
+      document.getElementById('mobile-menu-toggle')?.append(
+        <button>tahu</button>
+      )
       avatarBtn.addEventListener('click', () => {
         dropdown.classList.toggle('hidden');
       });
