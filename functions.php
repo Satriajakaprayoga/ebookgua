@@ -1,4 +1,8 @@
 <?php
+//
+require get_template_directory().'/inc/install-pdfjs.php';
+// require get_template_directory().'/inc/install-plugins.php';
+
 // function script
 
 // get file css
@@ -618,6 +622,33 @@ function ebookgua_enqueue_icons()
     wp_enqueue_style('font-awesome', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
 }
 
+function load_dashicons_frontend()
+{
+    wp_enqueue_style('dashicons');
+}
+add_action('wp_enqueue_scripts', 'load_dashicons_frontend');
+
+// Peringatan jika Rank Math belum terinstall atau diaktifkan
+function ebookgua_notice_plugin_required()
+{
+    // Jangan tampilkan notifikasi ini jika baru saja install PDF.js
+
+    if (! is_plugin_active('seo-by-rank-math/seo-by-rank-math.php')) {
+        echo '<div class="notice notice-warning is-dismissible">
+            <p><strong>Plugin Rank Math SEO belum terpasang atau belum aktif.</strong><br>
+            Theme ini direkomendasikan untuk menggunakan <a href="https://wordpress.org/plugins/seo-by-rank-math/" target="_blank">Rank Math</a> agar SEO bekerja dengan optimal.</p>
+        </div>';
+    }
+
+    if (! is_plugin_active('pdfjs-viewer-shortcode/pdfjs-viewer.php')) {
+        echo '<div class="notice notice-warning is-dismissible">
+            <p><strong>Plugin pdfjs-viewer belum terpasang atau belum aktif.</strong><br>
+            Agar fitur baca PDF dapat bekerja dengan optimal silahkan install atau pluggin atau nonaktifkan theme -> akifkan theeme agar otomatis install plugin.</p>
+        </div>';
+    }
+}
+add_action('admin_notices', 'ebookgua_notice_plugin_required');
+
 // action
 add_action('wp_enqueue_scripts', 'ebookgua_enqueue_scripts');
 add_action('init', 'ebookgua_register_post_type');
@@ -633,6 +664,7 @@ add_action('wp_enqueue_scripts', 'mytheme_enqueue_styles');
 add_action('customize_register', 'ebookgua_customize_footer');
 add_action('wp_enqueue_scripts', 'ebookgua_enqueue_icons');
 add_action('customize_register', 'ebookgua_customize_register');
+
 ?>
 
 <?php

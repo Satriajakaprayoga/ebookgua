@@ -145,7 +145,7 @@ if (! defined('ABSPATH')) {
     </div>
 
     <!-- Mobile Menu -->
-    <nav id="mobile-menu" class=" md:hidden px-4 pb-4 space-y-2 relative group">
+    <nav id="mobile-menu" class=" hidden md:hidden px-4 pb-4 space-y-2 relative group">
           <ul class="list-none">
         <li>
             <a href="<?php echo esc_url(home_url('/')); ?>" class="block text-gray-700 font-medium py-2">

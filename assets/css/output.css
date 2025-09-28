@@ -1292,12 +1292,20 @@ select {
   margin-bottom: 0;
 }
 
+.fixed {
+  position: fixed;
+}
+
 .absolute {
   position: absolute;
 }
 
 .relative {
   position: relative;
+}
+
+.inset-0 {
+  inset: 0px;
 }
 
 .left-0 {
@@ -1515,6 +1523,14 @@ select {
 
 .h-8 {
   height: 2rem;
+}
+
+.h-\[400px\] {
+  height: 400px;
+}
+
+.h-\[95vh\] {
+  height: 95vh;
 }
 
 .h-auto {
@@ -1771,6 +1787,11 @@ select {
   border-color: transparent;
 }
 
+.bg-black {
+  --tw-bg-opacity: 1;
+  background-color: rgb(0 0 0 / var(--tw-bg-opacity, 1));
+}
+
 .bg-blue-100 {
   --tw-bg-opacity: 1;
   background-color: rgb(219 234 254 / var(--tw-bg-opacity, 1));
@@ -1819,6 +1840,10 @@ select {
 .bg-yellow-100 {
   --tw-bg-opacity: 1;
   background-color: rgb(254 249 195 / var(--tw-bg-opacity, 1));
+}
+
+.bg-opacity-60 {
+  --tw-bg-opacity: 0.6;
 }
 
 .bg-gradient-to-br {
@@ -1920,11 +1945,6 @@ select {
 .py-4 {
   padding-top: 1rem;
   padding-bottom: 1rem;
-}
-
-.py-6 {
-  padding-top: 1.5rem;
-  padding-bottom: 1.5rem;
 }
 
 .pb-4 {
@@ -2147,7 +2167,8 @@ select {
 }
 
 .ebookgua-social-fixed a:hover {
-  transform: scale(1.2);; /* WP blue */
+  transform: scale(1.2);
+  /* WP blue */
 }
 
 .hover\:cursor-pointer:hover {
@@ -2267,6 +2288,14 @@ select {
 
   .md\:hidden {
     display: none;
+  }
+
+  .md\:h-\[800px\] {
+    height: 800px;
+  }
+
+  .md\:h-\[90vh\] {
+    height: 90vh;
   }
 
   .md\:w-1\/2 {

@@ -1,31 +1,31 @@
 <?php get_header(); ?>
-<?php 
+<?php
 
 $badgeStyle = 'bg-blue-50 text-primary-foreground hover:bg-blue-100 hover:cursor-pointer inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent ';
 // get tags from database
-$listTags = get_tags(array(
+$listTags = get_tags([
     'orderby' => 'id', // urutkan berdasarkan ID
-    'order'   => 'DESC', // ID terbesar (terbaru) di atas
-    'number'  => 10, // ambil 10 tag saja
-));
+    'order' => 'DESC', // ID terbesar (terbaru) di atas
+    'number' => 10, // ambil 10 tag saja
+]);
 
-$listCategories = get_categories(array(
+$listCategories = get_categories([
     'orderby' => 'id', // urutkan berdasarkan ID
-    'order'   => 'DESC', // ID terbesar (terbaru) di atas
-    'number'  => 5, // ambil 10 tag saja
-));
+    'order' => 'DESC', // ID terbesar (terbaru) di atas
+    'number' => 5, // ambil 10 tag saja
+]);
 
-$listPost = have_posts(array(
-  'orderby' => 'id',
-  'order' => 'DESC',
-  'number' => 2
-));
+$listPost = have_posts([
+    'orderby' => 'id',
+    'order' => 'DESC',
+    'number' => 2,
+]);
 
 $args = [
-  'post_type' => 'buku',
-  'orderby' => 'date',
-  'order' => 'DESC',
-  
+    'post_type' => 'buku',
+    'orderby' => 'date',
+    'order' => 'DESC',
+
 ];
 
 $queryGetNewer = new WP_Query([...$args, 'posts_per_page' => 10]);
@@ -50,19 +50,19 @@ $queryGet3Newer = new WP_Query([...$args, 'posts_per_page' => 6]);
     <?php get_search_form(); ?>
   </div>
   <div class="flex flex-wrap justify-center gap-3 mb-8">
-    <?php 
+    <?php
     $noTagsMessage = 'Tidak ada tags';
-    // check is there tags
-      if ($listTags) : ?> 
-          <?php 
-          foreach ($listTags as $tag) { 
-              $tag_link = get_tag_link($tag->term_id);
-              echo '<div class="' . esc_attr($badgeStyle) . '">' . '<a href="' . esc_url($tag_link) . '">#' . esc_html($tag->name) . '</a></div> ';
-          }
-          ?>
-    <?php else : ?>
-        <?php echo '<div class="' . esc_attr($badgeStyle) . '">' . $noTagsMessage . '</div> '; ?>
-    <?php endif; 
+// check is there tags
+if ($listTags) { ?> 
+          <?php
+    foreach ($listTags as $tag) {
+        $tag_link = get_tag_link($tag->term_id);
+        echo '<div class="'.esc_attr($badgeStyle).'">'.'<a href="'.esc_url($tag_link).'">#'.esc_html($tag->name).'</a></div> ';
+    }
+    ?>
+    <?php } else { ?>
+        <?php echo '<div class="'.esc_attr($badgeStyle).'">'.$noTagsMessage.'</div> '; ?>
+    <?php }
     ?> 
   </div>
   </div>
@@ -84,8 +84,9 @@ $queryGet3Newer = new WP_Query([...$args, 'posts_per_page' => 6]);
     </div>
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
       <!-- card -->
-       <?php if($queryGetNewer->have_posts()) : ?>
-        <?php while ($queryGetNewer->have_posts()) : $queryGetNewer->the_post() ?>
+       <?php if ($queryGetNewer->have_posts()) { ?>
+        <?php while ($queryGetNewer->have_posts()) {
+            $queryGetNewer->the_post() ?>
             <div class="group shadow-md hover:shadow-lg transition-shadow bg-white rounded-md">
               <!-- card content -->
               <div class="p-4">
@@ -93,11 +94,11 @@ $queryGet3Newer = new WP_Query([...$args, 'posts_per_page' => 6]);
                 <div class="relative mb-4">
                   <a href="<?php the_permalink() ?>" class="cursor-pointer">
                     <div class="aspect-square bg-neutral-300 rounded-lg mb-3 flex items-center justify-center">
-                      <?php if (has_post_thumbnail()): ?>
+                      <?php if (has_post_thumbnail()) { ?>
                         <?php the_post_thumbnail('medium', ['class' => 'w-full h-full object-cover rounded-md']); ?>
-                      <?php else: ?>
+                      <?php } else { ?>
                         <div class="w-16 h-20 bg-white rounded shadow-sm"></div>
-                      <?php endif; ?>
+                      <?php } ?>
                     </div>
                   </a>
                   <!-- status -->
@@ -116,29 +117,29 @@ $queryGet3Newer = new WP_Query([...$args, 'posts_per_page' => 6]);
 
                   <!-- {/* Rating */} -->
                   <?php $rating = floatval(get_post_meta(get_the_ID(), '_rating', true)); ?>
-                  <?php if ($rating): ?>
+                  <?php if ($rating) { ?>
                     <div class="flex items-center space-x-1 text-yellow-400">
-                      <?php echo str_repeat('★', floor($rating)) . str_repeat('☆', 5 - floor($rating)); ?>
+                      <?php echo str_repeat('★', floor($rating)).str_repeat('☆', 5 - floor($rating)); ?>
                       <span class="text-sm text-black ml-1"><?php echo number_format($rating, 1); ?></span>
                     </div>
-                  <?php endif; ?>
+                  <?php } ?>
 
                   <!-- Category -->
                     <?php
-                    $cat_id = get_post_meta(get_the_ID(), '_kategori', true);
-                    $cat = get_category($cat_id);
-                    ?>
-                    <?php if ($cat && !is_wp_error($cat)): ?>
+                        $cat_id = get_post_meta(get_the_ID(), '_kategori', true);
+            $cat = get_category($cat_id);
+            ?>
+                    <?php if ($cat && ! is_wp_error($cat)) { ?>
                       <div class="inline-flex items-center rounded px-2 py-1 font-semibold text-blue-600 text-xs bg-blue-100 mt-4">
                         <?php echo esc_html($cat->name); ?>
                       </div>
-                    <?php endif; ?>
+                    <?php } ?>
                 </div>
               </div>
             </div>
-              <?php endwhile; ?>
+              <?php } ?>
           <?php wp_reset_postdata(); ?>
-        <?php endif; ?>
+        <?php } ?>
       </div>
 </div>
 </section>
@@ -160,12 +161,12 @@ $queryGet3Newer = new WP_Query([...$args, 'posts_per_page' => 6]);
       <!-- Check categori -->
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
         <!-- card BOOK -->
-        <?php if ($listCategories && count($listCategories) > 0) : ?>
-          <?php foreach ($listCategories as $cat): 
-            $link = get_category_link($cat->term_id);
-            $name = esc_html($cat->name);
-            $count = intval($cat->category_count);
-          ?>
+        <?php if ($listCategories && count($listCategories) > 0) { ?>
+          <?php foreach ($listCategories as $cat) {
+              $link = get_category_link($cat->term_id);
+              $name = esc_html($cat->name);
+              $count = intval($cat->category_count);
+              ?>
             <a href="<?php echo esc_url($link); ?>" class="block group cursor-pointer shadow-md hover:shadow-lg transition-shadow bg-white rounded-xl">
               <div class="p-4 flex flex-col items-center text-center space-y-1">
                 <div class="flex justify-center mb-2">
@@ -179,10 +180,10 @@ $queryGet3Newer = new WP_Query([...$args, 'posts_per_page' => 6]);
                 <p class="text-sm text-gray-600"><?php echo $count; ?> buku</p>
               </div>
             </a>
-          <?php endforeach; ?>
-        <?php else : ?>
+          <?php } ?>
+        <?php } else { ?>
           <p class="text-gray-500">Tidak ada kategori tersedia.</p>
-        <?php endif; ?>
+        <?php } ?>
 
         <!-- </div> -->
   </div>
@@ -203,20 +204,21 @@ $queryGet3Newer = new WP_Query([...$args, 'posts_per_page' => 6]);
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
       <!-- Kartu Buku -->
-       <?php if($queryGet3Newer->have_posts()) : ?>
-        <?php while($queryGet3Newer->have_posts()) : $queryGet3Newer->the_post() ?>
+       <?php if ($queryGet3Newer->have_posts()) { ?>
+        <?php while ($queryGet3Newer->have_posts()) {
+            $queryGet3Newer->the_post() ?>
 
         <div class="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow p-4 relative">
           <div class="flex gap-4">
             <!-- Gambar -->
             <div class="aspect-square max-w-20 bg-neutral-300 rounded-lg flex items-center justify-center">
-              <?php if (has_post_thumbnail()): ?>
+              <?php if (has_post_thumbnail()) { ?>
                     <?php the_post_thumbnail('small', ['class' => 'w-full h-full object-cover rounded-md']); ?>
-                  <?php else: ?>
+                  <?php } else { ?>
                     <div class="w-14 h-20 bg-white rounded shadow-sm m-2 flex items-center justify-center">
                       <div class="w-7 h-10 bg-neutral-300 rounded shadow-sm mx-2"></div>
                     </div>
-                  <?php endif; ?>
+                  <?php } ?>
             </div>
 
             <!-- Konten -->
@@ -232,24 +234,24 @@ $queryGet3Newer = new WP_Query([...$args, 'posts_per_page' => 6]);
                 <p class="text-xs text-gray-500"><?php echo esc_html(get_post_meta(get_the_ID(), '_penulis', true)); ?></p>
                   <!-- {/* Rating */} -->
                     <?php $rating = floatval(get_post_meta(get_the_ID(), '_rating', true)); ?>
-                    <?php if ($rating): ?>
+                    <?php if ($rating) { ?>
                       <div class="flex items-center space-x-1 text-yellow-400">
-                        <?php echo str_repeat('★', floor($rating)) . str_repeat('☆', 5 - floor($rating)); ?>
+                        <?php echo str_repeat('★', floor($rating)).str_repeat('☆', 5 - floor($rating)); ?>
                         <span class="text-sm text-black ml-1"><?php echo number_format($rating, 1); ?></span>
                       </div>
-                    <?php endif; ?>
-                <p class="text-sm text-gray-600 line-clamp-2"><?php echo esc_html(get_post_meta( get_the_ID(), '_deskripsi', true )) ?></p>
+                    <?php } ?>
+                <p class="text-sm text-gray-600 line-clamp-2"><?php echo esc_html(get_post_meta(get_the_ID(), '_deskripsi', true)) ?></p>
                 <div class="flex items-center justify-between mt-2">
                  <!-- Category -->
                       <?php
-                      $cat_id = get_post_meta(get_the_ID(), '_kategori', true);
-                      $cat = get_category($cat_id);
-                      ?>
-                      <?php if ($cat && !is_wp_error($cat)): ?>
+                          $cat_id = get_post_meta(get_the_ID(), '_kategori', true);
+            $cat = get_category($cat_id);
+            ?>
+                      <?php if ($cat && ! is_wp_error($cat)) { ?>
                         <div class="inline-flex items-center rounded-md px-2 py-0.5 font-light text-blue-500 text-xs bg-blue-100">
                           <?php echo esc_html($cat->name); ?>
                         </div>
-                      <?php endif; ?>
+                      <?php } ?>
                   <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400 hover:text-gray-600 cursor-pointer" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5v14l7-7 7 7V5H5z" />
                   </svg>
@@ -257,8 +259,8 @@ $queryGet3Newer = new WP_Query([...$args, 'posts_per_page' => 6]);
             </div>
           </div>
         </div>
-        <?php endwhile; ?>
-      <?php endif; ?>
+        <?php } ?>
+      <?php } ?>
     </div>
   </div>
 </section>

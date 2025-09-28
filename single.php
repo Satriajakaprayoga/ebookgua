@@ -37,6 +37,10 @@
                                 rel="noopener noreferrer">
                                 Download E-book
                             </a>
+            
+                            <button id='scrollToPdf' class="rounded-md px-4 py-2 font-bold text-white transition-shadow shadow-md hover:shadow-lg bg-blue-500 hover:bg-blue-600">
+                              Baca E-book
+                            </button>
                             <?php } else { ?>
                             <!-- <button class="rounded-md px-4 py-2 font-bold text-white transition-shadow shadow-md hover:shadow-lg bg-blue-500 hover:bg-blue-600">
                                 Download 
@@ -94,12 +98,30 @@ if (isset($cat_obj->name)) {
         </div>
     </div>
 </article>
+<div class="max-w-6xl mx-auto px-4 pt-10 mb-10">    
+                <div id="pdfViewerSection" class="w-full h-[400px] md:h-[800px] overflow-hidden mt-4">
+                    <?php echo do_shortcode('[pdfjs-viewer url="'.$pdf_url.'" viewer_width="100%" viewer_height="800px" fullscreen=false download=false print=false] '); ?>
+                </div>
+</div>
+<!-- <div id="pdfModal" class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center "> -->
+<!--   <div class="bg-white rounded-lg w-full max-w-4xl h-[95vh] md:h-[90vh] relative m-2 p-4"> -->
+<!---->
+<!--     <button id="closePdfModal" class="absolute top-2 right-2 text-black px-2 py-2 rounded-full "> -->
+<!--       <span class="dashicons dashicons-no"></span>  -->
+<!--     </button> -->
+<!---->
+<!--     <div class="w-full h-full mt-10"> -->
+<!--       <?php echo do_shortcode('[pdfjs-viewer url="'.$pdf_url.'" viewer_width="100%" viewer_height="650px" fullscreen=false print=false download=false]'); ?> -->
+<!--     </div> -->
+<!---->
+<!--   </div> -->
+<!-- </div> -->
 
-<div class="max-w-6xl mx-auto px-4 pt-10 mb-10">
-    <div class="mb-7">
+<div class="max-w-6xl mx-auto px-4 pt-10 mb-10">    
+  <div class="mb-7">
         <p>Tags:</p>
-            <?php
-                $tags = get_the_tags();
+          <?php
+          $tags = get_the_tags();
 if ($tags) { ?>
                 <div class="flex flex-wrap gap-2 mt-4">
                     <?php foreach ($tags as $tag) { ?>
@@ -124,3 +146,20 @@ if ($tags) { ?>
 
 
 <?php get_footer(); ?>
+
+ <script>
+ // document.getElementById("openPdfModal").addEventListener("click", function () {
+ //     document.getElementById("pdfModal").classList.remove("hidden");
+ //     document.body.classList.add("overflow-hidden");
+ // });
+ // document.getElementById("closePdfModal").addEventListener("click", function () {
+ //     document.getElementById("pdfModal").classList.add("hidden");
+ //     document.body.classList.remove("overflow-hidden");
+ // });
+
+ document.getElementById("scrollToPdf").addEventListener("click", function () {
+    document.getElementById("pdfViewerSection").scrollIntoView({
+        behavior: "smooth"
+    });
+});
+ </script>
