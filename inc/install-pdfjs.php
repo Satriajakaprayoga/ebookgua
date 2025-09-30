@@ -1,5 +1,6 @@
 <?php
 
+// install pdfjs
 function ebookgua_install_pdfjs()
 {
     $plugin_slug = 'pdfjs-viewer-shortcode/pdfjs-viewer.php';
@@ -44,7 +45,7 @@ function ebookgua_install_pdfjs()
 }
 add_action('after_switch_theme', 'ebookgua_install_pdfjs');
 
-// ✅ AKTIFKAN PDF.js SETELAH INSTALL
+// activate pluggin pdfjs-viewer
 function ebookgua_activate_pdfjs_on_load()
 {
     $should_activate = get_option('ebookgua_installing_pdfjs');
@@ -54,7 +55,7 @@ function ebookgua_activate_pdfjs_on_load()
         activate_plugin($plugin_slug);
 
         echo '<div class="notice notice-success is-dismissible" style="padding:5px; max-height:100px;">
-                <p><strong>Plugin PDF.js telah diinstall dan diaktifkan.</strong></p>
+                <p><strong>Plugin PDF.js Viewer telah diinstall dan diaktifkan.</strong></p>
               </div>';
 
         delete_option('ebookgua_installing_pdfjs');
