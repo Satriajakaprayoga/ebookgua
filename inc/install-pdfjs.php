@@ -1,33 +1,31 @@
 <?php
 
-function ebookgua_notice_pdfjs_installed()
+function ebookgua_install_pdfjs()
 {
-    $message = get_option('tahu');
-    if ($message) {
+    $plugin_slug = 'pdfjs-viewer-shortcode/pdfjs-viewer.php';
+    $plugin_dir = WP_PLUGIN_DIR.'/pdfjs-viewer-shortcode';
+    $plugin_zip = get_template_directory().'/required-plugins/pdfjs-viewer.zip';
 
-        echo '<div class="notice notice-success is-dismissible">';
-        echo '<h2>Plugin PDF.js sudah aktif</h2>';
-        echo '<pre style="white-space:pre-wrap; margin-top:10px;">uang</pre>';
-        echo '</div>';
+    // cek apakah file file sudah ada
+    if (file_exists($plugin_dir)) {
+        // aktifkan jika plugin pdf viewer tidak aktif
+        if (! is_plugin_active($plugin_slug)) {
+            echo '<div class="notice notice-success is-dismissible" style="padding:5px; max-height:100px;">
+                <p><strong>Plugin PDF.js Viewer sudah diaktifkan.</strong></p>
+              </div>';
+            activate_plugin($plugin_slug);
 
-        delete_option('tahu');
-    }
-}
+            return;
+        }
 
-add_action('admin_notices', 'ebookgua_notice_pdfjs_installed');
-
-function mytheme_install_pdfjs()
-{
-    $plugin_slug = 'pdfjs-viewer-shortcode/pdfjs-viewer.php'; // SLUG BENAR
-
-    if (is_plugin_active($plugin_slug)) {
-        update_option('tahu', true);
+        echo '<div class="notice notice-success is-dismissible" style="padding:5px; max-height:100px;">
+                <p><strong>Plugin PDF.js Viewer sudah terpasang.</strong></p>
+              </div>';
 
         return;
     }
 
-    $plugin_zip = get_template_directory().'/required-plugins/pdfjs-viewer.zip';
-
+    // install plugin pdfjs-viewer jika file plugin tidak ada
     if (file_exists($plugin_zip)) {
 
         require_once ABSPATH.'wp-admin/includes/file.php';
@@ -35,42 +33,32 @@ function mytheme_install_pdfjs()
         require_once ABSPATH.'wp-admin/includes/class-wp-upgrader.php';
         require_once ABSPATH.'wp-admin/includes/plugin.php';
 
-        ob_start(); // Tangkap output asli dari upgrader
-
+        ob_start();
         $upgrader = new Plugin_Upgrader(new Automatic_Upgrader_Skin);
         $upgrader->install($plugin_zip);
-        update_option('mytheme_installing_pdfjs', true);
-        $install_output = ob_get_clean(); // Simpan outputnya
+        ob_end_clean();
 
-        // Simpan ke option agar nanti bisa ditampilkan di admin_notices
-        update_option('mytheme_install_message', $install_output);
+        update_option('ebookgua_installing_pdfjs', true);
+        update_option('ebookgua_pdfjs_slug', $plugin_slug);
     }
 }
-add_action('after_switch_theme', 'mytheme_install_pdfjs');
+add_action('after_switch_theme', 'ebookgua_install_pdfjs');
 
+// ✅ AKTIFKAN PDF.js SETELAH INSTALL
 function ebookgua_activate_pdfjs_on_load()
 {
-    $should_activate = get_option('ebookgua_activate_pdfjs');
-    $plugin_slug = get_option('mytheme_pdfjs_slug');
+    $should_activate = get_option('ebookgua_installing_pdfjs');
+    $plugin_slug = get_option('ebookgua_pdfjs_slug');
 
     if ($should_activate && $plugin_slug) {
         activate_plugin($plugin_slug);
-        delete_option('ebookgua_activate_pdfjs');
-        delete_option('mytheme_pdfjs_slug');
+
+        echo '<div class="notice notice-success is-dismissible" style="padding:5px; max-height:100px;">
+                <p><strong>Plugin PDF.js telah diinstall dan diaktifkan.</strong></p>
+              </div>';
+
+        delete_option('ebookgua_installing_pdfjs');
+        delete_option('ebookgua_pdfjs_slug');
     }
 }
 add_action('admin_init', 'ebookgua_activate_pdfjs_on_load');
-
-function mytheme_show_install_message()
-{
-    $message = get_option('mytheme_install_message', null);
-    if ($message !== null) {
-        echo '<div class="notice notice-success is-dismissible" style="padding:15px; overflow:auto; max-height:200px;">';
-        echo '<h2>Plugin PDF.js Berhasil Diinstall tahu goreng'.esc_html($message).'</h2>';
-        echo '<pre style="white-space:pre-wrap; margin-top:10px;">'.esc_html($message).'</pre>';
-        echo '</div>';
-        delete_option('mytheme_install_message');
-        delete_option('mytheme_installing_pdfjs');
-    }
-}
-add_action('admin_notices', 'mytheme_show_install_message');
