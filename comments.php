@@ -36,10 +36,10 @@ $comment_args = [
 comment_form($comment_args);
 ?>
 
-<?php if (have_comments()) : ?>
+<?php if (have_comments()) { ?>
     <div class="mt-10 border-t pt-6">
         <h2 class="text-xl font-semibold mb-4">
-            <?php echo get_comments_number() . ' Komentar'; ?>
+            <?php echo get_comments_number().' Komentar'; ?>
         </h2>
 
         <ul class="space-y-6">
@@ -48,7 +48,7 @@ comment_form($comment_args);
                 'style' => 'ul',
                 'avatar_size' => 48,
                 'short_ping' => true,
-                'callback' => function($comment, $args, $depth) {
+                'callback' => function ($comment, $args, $depth) {
                     ?>
                     <li <?php comment_class('border rounded-lg p-4'); ?> id="comment-<?php comment_ID(); ?>">
                         <div class="flex gap-4">
@@ -65,9 +65,9 @@ comment_form($comment_args);
                         </div>
                     </li>
                     <?php
-                }
+                },
             ]);
-            ?>
+    ?>
         </ul>
     </div>
-<?php endif; ?>
+<?php } ?>
