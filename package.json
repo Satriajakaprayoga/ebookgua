@@ -3,12 +3,14 @@
   "version": "1.0.0",
   "scripts": {
     "build": "npx tailwindcss -i ./assets/css/main.css -o ./assets/css/output.css --minify",
-    "watch": "npx tailwindcss -i ./assets/css/main.css -o ./assets/css/output.css --watch"
+    "watch:css": "npx tailwindcss -i ./assets/css/main.css -o ./assets/css/output.css --watch",
+    "watch:bs": "browser-sync start --proxy 'localhost:1111' --files '**/*.php' '**/*.css' '**/*.js'"
   },
   "devDependencies": {
     "@tailwindcss/forms": "^0.5.10",
     "@tailwindcss/typography": "^0.5.16",
     "autoprefixer": "^10.4.21",
+    "browser-sync": "^3.0.4",
     "postcss": "^8.5.6",
     "tailwind": "^2.3.1",
     "tailwindcss": "^3.4.17"

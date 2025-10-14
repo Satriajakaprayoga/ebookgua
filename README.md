@@ -1,21 +1,25 @@
 # Tata Cara Install Theme ebookgua
+
 untuk installasi theme ebookgua ada 2 cara yaitu dengan download format zip atau langsung clone repo pada wordpress
 
 ## install di wordpres
-1. donwload repo dengan cara klik tombol code diatas -> Download ZIP 
+
+1. donwload repo dengan cara klik tombol code diatas -> Download ZIP
 2. masuk ke admin panel wordpress
 3. setelah itu upload ZIPnya langsung -> pilih Appearence -> themes -> Add Theme -> Upload Theme -> chose file or drag file ZIP
 4. klik install dan done
 
 ## install dengan cara terminal
+
 1. masuk ke server wordpress menggunakan ssh
 2. masuk masuk ke directory wordpress -> wp-content-> themes
-3. clone repositori 
-~~~
-git clone https://github.com/Satriajakaprayoga/ebookgua.git
-~~~
-4. done
+3. clone repositori
 
+```
+git clone https://github.com/Satriajakaprayoga/ebookgua.git
+```
+
+4. done
 
 # 📘 Dokumentasi Instalasi dan Pembuatan Custom Theme WordPress dengan Tailwind CSS
 
@@ -25,9 +29,9 @@ Dokumentasi ini ditulis untuk membantu siapapun dalam membuat tema WordPress kus
 
 Sebelum memulai, pastikan:
 
-* ✅ Node.js dan npm sudah terinstal
-* ✅ WordPress sudah aktif di lokal (misalnya via XAMPP atau Laragon)
-* ✅ Kamu sudah memiliki folder theme aktif di `/wp-content/themes/nama-theme-kamu`
+- ✅ Node.js dan npm sudah terinstal
+- ✅ WordPress sudah aktif di lokal (misalnya via XAMPP atau Laragon)
+- ✅ Kamu sudah memiliki folder theme aktif di `/wp-content/themes/nama-theme-kamu`
 
 ---
 
@@ -70,40 +74,34 @@ mkdir -p assets/css
 ### 1.6 Konfigurasi `tailwind.config.js`
 
 ```js
-const defaultTheme = require('tailwindcss/defaultTheme');
+const defaultTheme = require("tailwindcss/defaultTheme");
 
 module.exports = {
-  content: [
-    './**/*.php',
-    './assets/js/**/*.js'
-  ],
+  content: ["./**/*.php", "./assets/js/**/*.js"],
   theme: {
     container: {
       center: true,
-      padding: '1rem'
+      padding: "1rem",
     },
     extend: {
       colors: {
-        primary: '#1d4ed8',
-        secondary: '#9333ea',
-        gray: '#6b7280'
+        primary: "#1d4ed8",
+        secondary: "#9333ea",
+        gray: "#6b7280",
       },
       fontSize: {
-        sm: ['14px', '1.5'],
-        base: ['16px', '1.75'],
-        lg: ['20px', '1.75'],
-        xl: ['24px', '1.75']
+        sm: ["14px", "1.5"],
+        base: ["16px", "1.75"],
+        lg: ["20px", "1.75"],
+        xl: ["24px", "1.75"],
       },
       fontFamily: {
-        sans: ['Inter', ...defaultTheme.fontFamily.sans]
-      }
-    }
+        sans: ["Inter", ...defaultTheme.fontFamily.sans],
+      },
+    },
   },
-  plugins: [
-    require('@tailwindcss/typography'),
-    require('@tailwindcss/forms')
-  ]
-}
+  plugins: [require("@tailwindcss/typography"), require("@tailwindcss/forms")],
+};
 ```
 
 ### 1.7 Konfigurasi `postcss.config.js`
@@ -112,9 +110,9 @@ module.exports = {
 module.exports = {
   plugins: {
     tailwindcss: {},
-    autoprefixer: {}
-  }
-}
+    autoprefixer: {},
+  },
+};
 ```
 
 ### 1.8 Tambahkan Script Build di `package.json`
@@ -122,7 +120,8 @@ module.exports = {
 ```json
 "scripts": {
   "build": "npx tailwindcss -i ./assets/css/main.css -o ./assets/css/output.css --minify",
-  "watch": "npx tailwindcss -i ./assets/css/main.css -o ./assets/css/output.css --watch"
+  "watch:css": "npx tailwindcss -i ./assets/css/main.css -o ./assets/css/output.css --watch",
+  "watch:bs": "browser-sync start --proxy 'localhost:1111' --files '**/*.php' '**/*.css' '**/*.js'"
 }
 ```
 
@@ -235,16 +234,16 @@ Dan di template post:
 
 ### 🚀 Optimasi Performa
 
-* Jalankan `npm run build` sebelum deployment
-* Gunakan plugin caching untuk minify dan compress HTML
-* Gunakan `loading="lazy"` untuk gambar
-* Aktifkan gzip compression di server
+- Jalankan `npm run build` sebelum deployment
+- Gunakan plugin caching untuk minify dan compress HTML
+- Gunakan `loading="lazy"` untuk gambar
+- Aktifkan gzip compression di server
 
 ### 🔎 SEO Tips
 
-* Gunakan semantic HTML (`<article>`, `<header>`, `<nav>`, dll)
-* Gunakan plugin SEO jika diperlukan (misal: Yoast SEO, Rank Math)
-* Gunakan struktur heading yang rapi di dalam konten post
+- Gunakan semantic HTML (`<article>`, `<header>`, `<nav>`, dll)
+- Gunakan plugin SEO jika diperlukan (misal: Yoast SEO, Rank Math)
+- Gunakan struktur heading yang rapi di dalam konten post
 
 ---
 
@@ -252,9 +251,9 @@ Dan di template post:
 
 Dengan pendekatan ini, kamu punya:
 
-* Custom theme yang ringan dan fleksibel
-* Tanpa plugin tambahan
-* Konsisten antara editor Gutenberg dan frontend
-* Siap pakai untuk produksi dan dikembangkan lebih lanjut
+- Custom theme yang ringan dan fleksibel
+- Tanpa plugin tambahan
+- Konsisten antara editor Gutenberg dan frontend
+- Siap pakai untuk produksi dan dikembangkan lebih lanjut
 
 Selamat membangun theme profesionalmu dengan Tailwind CSS dan WordPress! 🎉
